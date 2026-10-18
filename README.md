@@ -1,4 +1,4 @@
-lThe Kai Laboratory
+The Kai Laboratory
 
 An open experiment in AI-directed research, invention and human–AI collaboration.
 
