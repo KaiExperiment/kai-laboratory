@@ -1,0 +1,71 @@
+[
+  {
+    "proposal": {
+      "strategy": "two_opt",
+      "rationale": "Reverse segments to remove crossing edges that swaps miss.",
+      "prediction": "At least 1% mean tour-length reduction relative to greedy swaps.",
+      "measurable": true,
+      "uses_holdout": false,
+      "equal_budget": true
+    },
+    "decision": "accept_with_controls",
+    "reasons": [],
+    "strategy_risks": [
+      "Segment reversal is an established heuristic, not a novel discovery.",
+      "Full-tour reversals are null moves and must still consume budget."
+    ],
+    "controls": [
+      "Same nearest-neighbor starting tour, instance and full-score evaluation count.",
+      "Average repeated search trials within each instance; bootstrap instances, not pseudoreplicates.",
+      "Select on exploration only; validate one frozen candidate without retuning.",
+      "Evaluation counts are equal, but wall time and proposal overhead may differ.",
+      "Uniform synthetic instances and a heuristic baseline limit generalization."
+    ]
+  },
+  {
+    "proposal": {
+      "strategy": "relocate",
+      "rationale": "Move one city to repair poor local insertion choices.",
+      "prediction": "At least 1% mean tour-length reduction relative to greedy swaps.",
+      "measurable": true,
+      "uses_holdout": false,
+      "equal_budget": true
+    },
+    "decision": "accept_with_controls",
+    "reasons": [],
+    "strategy_risks": [
+      "Insertion-index conventions can bias neighborhoods; test permutation integrity.",
+      "Local insertion improvements can still remain trapped in poor basins."
+    ],
+    "controls": [
+      "Same nearest-neighbor starting tour, instance and full-score evaluation count.",
+      "Average repeated search trials within each instance; bootstrap instances, not pseudoreplicates.",
+      "Select on exploration only; validate one frozen candidate without retuning.",
+      "Evaluation counts are equal, but wall time and proposal overhead may differ.",
+      "Uniform synthetic instances and a heuristic baseline limit generalization."
+    ]
+  },
+  {
+    "proposal": {
+      "strategy": "anneal",
+      "rationale": "Accept some worsening segment reversals to escape local minima.",
+      "prediction": "At least 1% mean tour-length reduction relative to greedy swaps.",
+      "measurable": true,
+      "uses_holdout": false,
+      "equal_budget": true
+    },
+    "decision": "accept_with_controls",
+    "reasons": [],
+    "strategy_risks": [
+      "Temperature is scale-dependent and may waste a short budget on worsening moves.",
+      "Use a fixed schedule and return the best observed tour; never tune on validation."
+    ],
+    "controls": [
+      "Same nearest-neighbor starting tour, instance and full-score evaluation count.",
+      "Average repeated search trials within each instance; bootstrap instances, not pseudoreplicates.",
+      "Select on exploration only; validate one frozen candidate without retuning.",
+      "Evaluation counts are equal, but wall time and proposal overhead may differ.",
+      "Uniform synthetic instances and a heuristic baseline limit generalization."
+    ]
+  }
+]
