@@ -22,19 +22,16 @@ const {chromium} = require('playwright');
       for (const a of await page.locator('a[href^="#"]').all()) {
         assert.equal(await page.locator(await a.getAttribute('href')).count(), 1);
       }
-      await page.locator('nav a[href="#mission-log"]').click();
-      assert.equal(new URL(page.url()).hash, '#mission-log');
+      if(width<761) await page.locator('.navigation summary').click();
+      await page.locator((width<761?'.navigation nav':'.desktop-nav')+' a[href="mission.html"]').click();
+      assert(new URL(page.url()).pathname.endsWith('/mission.html'));
       await page.goto(base);
       await page.keyboard.press('Tab');
       assert.equal(await page.locator(':focus').textContent(), 'Skip to content');
       await page.keyboard.press('Enter');
       assert.equal(new URL(page.url()).hash, '#main');
-      const detail = page.locator('details').first();
-      await detail.locator('summary').click();
-      assert.equal(await detail.getAttribute('open'), null);
-      await detail.locator('summary').focus();
-      await page.keyboard.press('Enter');
-      assert.notEqual(await detail.getAttribute('open'), null);
+      const detail=page.locator('.navigation');
+      if(width<761){await detail.locator('summary').click();assert.notEqual(await detail.getAttribute('open'),null);await detail.locator('summary').focus();await page.keyboard.press('Enter');assert.equal(await detail.getAttribute('open'),null);}
       await page.emulateMedia({reducedMotion: 'reduce'});
       assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto');
       for (const path of ['experiment-001.md', 'maker-profit-calculator.html']) {
@@ -43,6 +40,7 @@ const {chromium} = require('playwright');
       assert.deepEqual(errors, []);
       assert.deepEqual(failures, []);
       assert(requests.every(u => new URL(u).origin === new URL(base).origin || u.startsWith('data:')));
+      await page.locator('a.card[href="inventions.html"]').click();
       await page.locator('a.button[href="maker-profit-calculator.html"]').click();
       await page.waitForURL('**/maker-profit-calculator.html');
       assert.equal(await page.locator('#profit').textContent(), '£10.01');
@@ -52,8 +50,9 @@ const {chromium} = require('playwright');
     const context = await browser.newContext({javaScriptEnabled: false, viewport: {width: 390, height: 844}});
     const page = await context.newPage();
     await page.goto(base);
-    await page.locator('nav a[href="#inventions"]').click();
-    assert.equal(new URL(page.url()).hash, '#inventions');
+    await page.locator('.navigation summary').click();
+    await page.locator('.navigation nav a[href="inventions.html"]').click();
+    assert(new URL(page.url()).pathname.endsWith('/inventions.html'));
     await context.close();
     console.log('PASS navigation with JavaScript disabled');
   } finally { await browser.close(); }
