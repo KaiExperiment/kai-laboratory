@@ -1,10 +1,96 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Maker Profit Calculator | Kai Laboratory</title><style>
-:root{font-family:system-ui,-apple-system,sans-serif;color:#1c2935;background:#f4f7f8}*{box-sizing:border-box}body{margin:0;padding:24px 14px}main{max-width:800px;margin:auto}header{margin-bottom:22px}h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.5rem)}p{line-height:1.5;color:#52616c}.card{background:white;border:1px solid #dbe3e7;border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 3px 12px #172a3a09}h2{font-size:1.15rem;margin:0 0 16px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}label{font-size:.9rem;font-weight:650;display:block}input{width:100%;margin-top:6px;border:1px solid #a9b8c1;border-radius:9px;padding:12px;font:inherit;background:#fff}input:focus{outline:3px solid #c7e6e3;border-color:#176f71}.hint{display:block;color:#687b84;font-size:.77rem;font-weight:400;margin-top:4px}.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric{background:#f3f8f8;border-radius:12px;padding:14px}.metric strong{display:block;font-size:clamp(1.2rem,4vw,1.7rem);margin-top:5px;overflow-wrap:anywhere}.metric small{color:#52616c}.positive{color:#12694c}.negative{color:#b12f32}.full{grid-column:1/-1}button{border:0;background:#176f71;color:white;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}footer{font-size:.85rem;color:#647782;margin-top:20px}#warning{color:#a13224;font-weight:650;min-height:1.3em}@media(max-width:420px){.card{padding:15px}.results{gap:8px}.metric{padding:10px}}
+:root{font-family:system-ui,-apple-system,sans-serif;color:#1c2935;background:#f4f7f8}*{box-sizing:border-box}body{margin:0;padding:24px 14px}main{max-width:800px;margin:auto}header{margin-bottom:22px}h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.5rem)}p{line-height:1.5;color:#52616c}.card{background:white;border:1px solid #dbe3e7;border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 3px 12px #172a3a09}h2{font-size:1.15rem;margin:0 0 16px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px}label{font-size:.9rem;font-weight:650;display:block}input{width:100%;margin-top:6px;border:1px solid #a9b8c1;border-radius:9px;padding:12px;font:inherit;font-size:16px;min-height:44px;background:#fff}input:focus{outline:3px solid #c7e6e3;border-color:#176f71}.hint{display:block;color:#52616c;font-size:.77rem;font-weight:400;margin-top:4px}.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric{background:#f3f8f8;border-radius:12px;padding:14px}.metric strong{display:block;font-size:clamp(1.2rem,4vw,1.7rem);margin-top:5px;overflow-wrap:anywhere}.metric small{color:#52616c}.positive{color:#12694c}.negative{color:#b12f32}.full{grid-column:1/-1}button{border:0;background:#176f71;color:white;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}footer{font-size:.85rem;color:#647782;margin-top:20px}#warning{color:#a13224;font-weight:650;min-height:1.3em}@media(max-width:420px){.card{padding:15px}.results{gap:8px}.metric{padding:10px}}
+label{min-width:0}button{min-height:44px;font-size:1rem}button:focus-visible{outline:3px solid #176f71;outline-offset:3px}input[aria-invalid="true"]{border:2px solid #b12f32}.error{display:block;color:#a13224;font-size:.85rem;font-weight:400;margin-top:4px}.error:empty{display:none}@media(max-width:350px){.results{grid-template-columns:1fr}}
 </style></head><body><main><header><h1>Maker Profit Calculator</h1><p>A free, independent Kai Laboratory tool for UK makers. Find out what a handmade product actually earns after materials, labour, overheads and selling fees. All calculations happen on your device.</p></header>
-<section class="card"><h2>1. Product and costs</h2><div class="fields"><label>Product name<input id="product" type="text" value="Handmade keepsake"></label><label>Selling price (£)<input id="price" type="number" min="0" step="0.01" value="24.99"></label><label>Materials per item (£)<input id="materials" type="number" min="0" step="0.01" value="4.50"></label><label>Packaging per item (£)<input id="packaging" type="number" min="0" step="0.01" value="1.20"></label><label>Other costs per item (£)<input id="other" type="number" min="0" step="0.01" value="0.50"><span class="hint">e.g. consumables, shipping you pay</span></label><label>Overheads per item (£)<input id="overheads" type="number" min="0" step="0.01" value="1.00"><span class="hint">e.g. equipment, electricity, workspace</span></label><label>Making time (minutes)<input id="minutes" type="number" min="0" step="1" value="25"></label><label>Your hourly pay target (£)<input id="hourly" type="number" min="0" step="0.01" value="12.50"></label></div></section>
-<section class="card"><h2>2. Selling fees</h2><div class="fields"><label>Platform fee (%)<input id="platform" type="number" min="0" step="0.1" value="6.5"><span class="hint">Set to 0 for direct sales</span></label><label>Payment processing fee (%)<input id="processing" type="number" min="0" step="0.1" value="3"></label><label>Fixed fee per sale (£)<input id="fixed" type="number" min="0" step="0.01" value="0.20"></label></div><p class="hint">These are editable examples, not a statement of current marketplace fees. Enter the fees that apply to your own sales.</p></section>
-<section class="card"><h2>3. Your results</h2><p id="warning" role="status"></p><div class="results"><div class="metric"><small>Profit after paying yourself</small><strong id="profit">—</strong></div><div class="metric"><small>Profit margin</small><strong id="margin">—</strong></div><div class="metric"><small>Labour cost</small><strong id="labour">—</strong></div><div class="metric"><small>Total cost including fees</small><strong id="total">—</strong></div><div class="metric"><small>Break-even selling price</small><strong id="breakeven">—</strong></div><div class="metric"><small>Price for 20% profit margin</small><strong id="target">—</strong></div><div class="metric full"><small>Profit before paying yourself (not take-home pay)</small><strong id="prelabour">—</strong></div></div><p class="hint">Margin = profit ÷ selling price. Break-even and target prices account for percentage-based fees. Figures exclude VAT, income tax and returns unless included in your costs.</p><button id="reset" type="button">Reset example values</button></section><footer>Open KI / Kai Laboratory — Invention Division · Version 1.0 · Free to use. This is an estimate, not financial or tax advice.</footer></main>
+<section class="card"><h2>1. Product and costs</h2><p class="hint">Enter costs for one item sold in one sale. Include any delivery charge collected in the selling price, and delivery you pay in other costs. Results update as you type; enter 0 where a cost does not apply. Amounts and minutes are limited to 1,000,000; each fee rate is limited to 100%. Positive inputs must be at least 0.000001.</p><div class="fields"><label>Product name<input id="product" type="text" value="Handmade keepsake"></label><label>Selling price (£)<input id="price" type="number" min="0" step="0.01" value="24.99"></label><label>Materials per item (£)<input id="materials" type="number" min="0" step="0.01" value="4.50"></label><label>Packaging per item (£)<input id="packaging" type="number" min="0" step="0.01" value="1.20"></label><label>Other costs per item (£)<input id="other" type="number" min="0" step="0.01" value="0.50"><span class="hint">e.g. consumables, shipping you pay</span></label><label>Overheads per item (£)<input id="overheads" type="number" min="0" step="0.01" value="1.00"><span class="hint">e.g. equipment, electricity, workspace</span></label><label>Making time (minutes)<input id="minutes" type="number" min="0" step="1" value="25"></label><label>Your hourly pay target (£)<input id="hourly" type="number" min="0" step="0.01" value="12.50"></label></div></section>
+<section class="card"><h2>2. Selling fees</h2><div class="fields"><label>Platform fee (%)<input id="platform" type="number" min="0" step="0.1" value="6.5"><span class="hint">Set to 0 if no platform fee applies</span></label><label>Payment processing fee (%)<input id="processing" type="number" min="0" step="0.1" value="3"></label><label>Fixed fee per sale (£)<input id="fixed" type="number" min="0" step="0.01" value="0.20"></label></div><p class="hint">These are editable examples, not current marketplace rates. Both percentage fees apply to the full selling price and are added together; the fixed fee applies once per item sold. Include any tax charged on fees. Tiered fees, multi-item orders and different fee bases need a separate estimate.</p></section>
+<noscript><p>This calculator needs JavaScript enabled. No data leaves your device.</p></noscript><section class="card"><h2>3. Your results</h2><p id="warning" role="status"></p><div class="results" id="results" aria-label="Calculated estimates"><div class="metric"><small>Profit after paying yourself</small><strong id="profit">—</strong></div><div class="metric"><small>Profit margin</small><strong id="margin">—</strong></div><div class="metric"><small>Selling fees at this price</small><strong id="fees">—</strong></div><div class="metric"><small>Materials, packaging, other costs and overheads</small><strong id="costs">—</strong></div><div class="metric"><small>Labour cost</small><strong id="labour">—</strong></div><div class="metric"><small>Total cost including fees</small><strong id="total">—</strong></div><div class="metric"><small>Break-even selling price</small><strong id="breakeven">—</strong></div><div class="metric"><small>Minimum price for at least 20% margin</small><strong id="target">—</strong></div><div class="metric full"><small>Profit before paying yourself (not take-home pay)</small><strong id="prelabour">—</strong></div></div><p class="hint">Labour = minutes ÷ 60 × hourly pay target. Profit = selling price − all listed costs, labour and selling fees. Margin = profit ÷ selling price; it is undefined at a £0 selling price. Suggested prices include labour and fees and round up to the next penny. Fees and labour use full precision until display; actual platform rounding may differ. Profit before labour still needs to cover your time and taxes. This is a per-item estimate, not the number of sales needed to recover startup costs. Figures exclude VAT on sales and income tax; add returns, wastage and other costs yourself. No information is saved or sent; reloading restores the example.</p><button id="reset" type="button">Reset example values</button></section><footer>Open KI / Kai Laboratory — Invention Division · Version 1.1 · Free to use. This is an estimate, not financial or tax advice.</footer></main>
 <script>
-const defaults={product:'Handmade keepsake',price:24.99,materials:4.5,packaging:1.2,other:.5,overheads:1,minutes:25,hourly:12.5,platform:6.5,processing:3,fixed:.2};const ids=Object.keys(defaults);const el=id=>document.getElementById(id);const gbp=n=>Number.isFinite(n)?new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(n):'Not possible';function calculate(){const n={};let invalid=false;for(const id of ids.filter(x=>x!=='product')){const raw=el(id).value;n[id]=Number(raw);if(raw.trim()===''||!Number.isFinite(n[id])||n[id]<0)invalid=true;}const warn=el('warning');if(invalid){warn.textContent='Please enter a valid number of zero or more in every cost field.';for(const id of ['profit','margin','labour','total','breakeven','target','prelabour'])el(id).textContent='—';return;}const rate=(n.platform+n.processing)/100;const labour=n.minutes/60*n.hourly;const base=n.materials+n.packaging+n.other+n.overheads+n.fixed;const total=base+labour+n.price*rate;const profit=n.price-total;const prelabour=profit+labour;const breakeven=rate<1?(base+labour)/(1-rate):NaN;const target=rate<.8?(base+labour)/(.8-rate):NaN;el('profit').textContent=gbp(profit);el('profit').className=profit>=0?'positive':'negative';el('margin').textContent=n.price>0?(100*profit/n.price).toFixed(1)+'%':'N/A';el('margin').className=profit>=0?'positive':'negative';el('labour').textContent=gbp(labour);el('total').textContent=gbp(total);el('breakeven').textContent=gbp(breakeven);el('target').textContent=gbp(target);el('prelabour').textContent=gbp(prelabour);warn.textContent=rate>=1?'Combined percentage fees are 100% or more; break-even pricing is impossible.':rate>=.8?'Combined percentage fees prevent a 20% margin.':'';}for(const id of ids)el(id).addEventListener('input',calculate);el('reset').addEventListener('click',()=>{for(const id of ids)el(id).value=defaults[id];calculate()});calculate();
+'use strict';
+const defaults = {product:'Handmade keepsake',price:24.99,materials:4.5,packaging:1.2,other:.5,overheads:1,minutes:25,hourly:12.5,platform:6.5,processing:3,fixed:.2};
+const numericIds = Object.keys(defaults).filter(id => id !== 'product');
+const resultIds = ['profit','margin','labour','total','breakeven','target','prelabour','fees','costs'];
+const el = id => document.getElementById(id);
+const currency = new Intl.NumberFormat('en-GB', {style:'currency',currency:'GBP'});
+const gbp = n => n === null ? 'Not possible' : currency.format(Object.is(n, -0) ? 0 : n);
+// Keep the model independent of the DOM so the actual shipped maths can be tested.
+function validateValue(id, raw) {
+  const max = ['platform','processing'].includes(id) ? 100 : 1000000;
+  if (String(raw).trim() === '' || !Number.isFinite(Number(raw))) return 'Enter a number (use 0 if none).';
+  if (Number(raw) < 0 || Number(raw) > max) return `Enter a number from 0 to ${max.toLocaleString('en-GB')}.`;
+  if (Number(raw) > 0 && Number(raw) < .000001) return 'Enter 0 or a number of at least 0.000001.';
+  return '';
+}
+function roundPriceUp(value) {
+  // Suppress floating-point noise at an exact penny, not genuine fractions of a penny.
+  const pennies = value * 100;
+  const nearest = Math.round(pennies);
+  return (Math.abs(pennies - nearest) <= Number.EPSILON * Math.max(1, pennies) * 4 ? nearest : Math.ceil(pennies)) / 100;
+}
+function compute(n) {
+  for (const id of numericIds) if (validateValue(id, n[id] ?? '')) throw new RangeError(`Invalid ${id}`);
+  const rate = (n.platform + n.processing) / 100;
+  const labour = n.minutes / 60 * n.hourly;
+  const costs = n.materials + n.packaging + n.other + n.overheads;
+  const base = costs + labour + n.fixed;
+  const fees = n.price * rate + n.fixed;
+  const total = costs + labour + fees;
+  const profit = n.price - total;
+  // Zero revenue covers zero costs even at confiscatory percentage rates.
+  const breakeven = base === 0 ? 0 : rate < 1 ? roundPriceUp(base / (1 - rate)) : null;
+  // Margin requires a positive selling price, including when costs are zero.
+  const target = base === 0 ? (rate <= .8 ? .01 : null) : rate < .8 ? roundPriceUp(base / (.8 - rate)) : null;
+  return {rate,labour,costs,fees,total,profit,prelabour:n.price-costs-fees,
+    margin:n.price > 0 ? profit / n.price * 100 : null,breakeven,target};
+}
+function calculate() {
+  const n = {};
+  const invalid = [];
+  for (const id of numericIds) {
+    const field = el(id);
+    const error = validateValue(id, field.value);
+    el(`${id}-error`).textContent = error;
+    field.setAttribute('aria-invalid', String(Boolean(error)));
+    if (error) invalid.push(field.closest('label').firstChild.textContent.trim());
+    n[id] = Number(field.value);
+  }
+  if (invalid.length) {
+    el('warning').textContent = `Check: ${invalid.join(', ')}. Results are unavailable until these fields are valid.`;
+    for (const id of resultIds) { el(id).textContent = '—'; el(id).className = ''; }
+    return;
+  }
+  const r = compute(n);
+  for (const id of resultIds.filter(id => id !== 'margin')) el(id).textContent = gbp(r[id]);
+  el('margin').textContent = r.margin === null ? 'N/A (price is £0)' : r.margin.toFixed(1) + '%';
+  for (const id of ['profit','margin']) el(id).className = r.profit >= 0 ? 'positive' : 'negative';
+  const messages = [];
+  if (r.breakeven === null) messages.push('Combined percentage fees are 100% or more: no price covers your costs.');
+  if (r.target === null) messages.push('These fees and costs prevent a 20% margin at any positive price.');
+  if (r.breakeven === 0) messages.push('With zero costs, £0 breaks even. A margin requires a positive selling price.');
+  if (r.profit < 0) messages.push('This selling price does not cover your costs and target pay.');
+  el('warning').textContent = messages.join(' ');
+}
+for (const id of numericIds) {
+  const field = el(id);
+  field.min = '0';
+  field.max = ['platform','processing'].includes(id) ? '100' : '1000000';
+  field.step = 'any';
+  field.required = true;
+  field.inputMode = 'decimal';
+  const error = document.createElement('span');
+  error.id = `${id}-error`;
+  error.className = 'error';
+  field.insertAdjacentElement('afterend', error);
+  const hint = field.closest('label').querySelector('.hint');
+  if (hint) hint.id = `${id}-hint`;
+  field.setAttribute('aria-describedby', error.id + (hint ? ' ' + hint.id : ''));
+  field.addEventListener('input', calculate);
+}
+el('reset').addEventListener('click', () => {
+  for (const id of Object.keys(defaults)) el(id).value = defaults[id];
+  calculate();
+  el('warning').textContent = 'Example values restored.';
+});
+calculate();
 </script></body></html>
