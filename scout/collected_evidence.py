@@ -5,6 +5,7 @@ No automatic claim generation: a human must assess relevance and evidence qualit
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -24,7 +25,9 @@ def prepare(snapshot, source_id, publisher, title, independence_group, quality=1
     if not raw or len(raw) > 200_000:
         raise ValueError("Invalid source size")
     raw.decode("utf-8")
-    if not source_id or not publisher or not title or not independence_group:
+    if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}", source_id):
+        raise ValueError("Source ID must be a safe short identifier")
+    if not publisher or not title or not independence_group:
         raise ValueError("Source metadata required")
     if not isinstance(quality, int) or quality < 0 or quality > 4:
         raise ValueError("Quality must be 0 to 4")
