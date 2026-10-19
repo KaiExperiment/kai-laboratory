@@ -107,6 +107,15 @@ def ingest(path):
                         timestamp(h['reviewed_at'])
                     require(all(timestamp(history[i]['reviewed_at']) <= timestamp(history[i+1]['reviewed_at'])
                                 for i in range(len(history)-1)), 'Review history must be chronological')
+                    previous_hash = '0' * 64
+                    for h in history:
+                        require(h.get('previous_hash') == previous_hash,
+                                'Review history hash chain has invalid predecessor')
+                        payload = {k: v for k, v in h.items() if k != 'event_hash'}
+                        expected_hash = sha(encoded(payload))
+                        require(h.get('event_hash') == expected_hash,
+                                'Review history event hash mismatch')
+                        previous_hash = expected_hash
                     if history:
                         require(history[-1]['verdict'] == 'approved'
                                 and history[-1]['reviewer'] == review['reviewer']
