@@ -8,17 +8,20 @@ import json
 import re
 from pathlib import Path
 from datetime import datetime
+from .collector import allowed
 
 def prepare(snapshot, source_id, publisher, title, independence_group, quality=1):
     folder = Path(snapshot)
     record = json.loads((folder / "provenance.json").read_text(encoding="utf-8"))
     if record.get("status") != "ok":
         raise ValueError("Collection did not succeed")
-    if not record.get("final_url", "").startswith("https://"):
-        raise ValueError("Missing HTTPS final URL")
+    if not isinstance(record.get("final_url"), str) or not allowed(record["final_url"]):
+        raise ValueError("Final URL is not on the approved HTTPS source allowlist")
     if not record.get("retrieved_at"):
         raise ValueError("Missing retrieval time")
-    datetime.fromisoformat(record["retrieved_at"])
+    retrieved = datetime.fromisoformat(record["retrieved_at"])
+    if retrieved.tzinfo is None or retrieved.utcoffset() is None:
+        raise ValueError("Retrieval time must include a timezone")
     raw = (folder / "source.txt").read_bytes()
     if len(raw) != record.get("bytes") or hashlib.sha256(raw).hexdigest() != record.get("sha256"):
         raise ValueError("Collected source does not match provenance")
