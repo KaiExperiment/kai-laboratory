@@ -83,6 +83,31 @@ class SemanticLimitTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Semantic approval requires"):
                 ingest(path)
 
+    def test_approved_claim_is_invalidated_by_new_contradiction(self):
+        candidate_rule = rule()
+        claim = candidate_rule["claims"][0]
+        claim["semantic_review"] = "approved"
+        claim["review_record"] = {
+            "reviewer": "test-reviewer",
+            "rationale": "Historical approval for regression test",
+            "limitations": "May be overturned by new evidence",
+            "reviewed_at": "2026-10-19T18:00:00Z",
+        }
+        claim["evidence"].append(
+            {"source": "guide", "quote": "Fees are charged.", "stance": "supports"})
+        sources = {
+            "policy": source("A fee exists.", "policy"),
+            "guide": source("Fees are charged.", "guide"),
+            "counter": source("No buyers requested a tool.", "counter"),
+        }
+        claim["evidence"].append(
+            {"source": "counter", "quote": "No buyers requested a tool.", "stance": "contradicts"})
+        candidate = evaluate(candidate_rule, sources)
+        self.assertEqual(candidate["decision"], "abstain")
+        self.assertEqual(candidate["claims"][0]["status"], "contradicted")
+        self.assertIn("Previously approved claim invalidated by missing or contradictory evidence",
+                      candidate["challenge"]["blockers"])
+
     def test_quote_is_traceable_not_semantically_proven(self):
         candidate = evaluate(rule(), {"policy": source("A fee exists.", "policy")})
         self.assertEqual(candidate["claims"][0]["status"], "traceable")
