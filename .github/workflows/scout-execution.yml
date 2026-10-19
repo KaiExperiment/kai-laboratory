@@ -40,6 +40,19 @@ jobs:
         run: |
           python -m scout.collected_evidence --snapshot work/scout-public-source --id gutenberg-robots --publisher "Project Gutenberg" --title "Robots access rules" --group gutenberg --output work/scout-prepared-source
           cat work/scout-prepared-source/source-entry.json
+      - name: Run SCOUT on verified live-source dossier
+        run: |
+          python -m scout.live_trial --prepared work/scout-prepared-source --output work/scout-live-dossier
+          python -m scout run --input work/scout-live-dossier/dossier.json --output work/scout-live-report
+          python -m scout verify work/scout-live-report
+          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-live-report/research.json").read_text()); print("Live-source candidates:", [(c["id"], c["decision"]) for c in r["candidates"]])'
+      - name: Upload live-source research
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-live-source-research
+          path: work/scout-live-report/
+          if-no-files-found: ignore
       - name: Upload prepared source
         if: always()
         uses: actions/upload-artifact@v4
