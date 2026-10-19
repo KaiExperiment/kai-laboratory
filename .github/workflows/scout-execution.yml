@@ -45,7 +45,7 @@ jobs:
           python -m scout.live_trial --prepared work/scout-prepared-source --output work/scout-live-dossier
           python -m scout run --input work/scout-live-dossier/dossier.json --output work/scout-live-report
           python -m scout verify work/scout-live-report
-          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-live-report/research.json").read_text()); print("Live-source candidates:", [(c["id"], c["decision"]) for c in r["candidates"]])'
+          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-live-report/research.json").read_text()); assert len(r["candidates"]) == 1 and r["candidates"][0]["decision"] == "abstain", "Unsupported live-source opportunity was not rejected"; print("Verified live-source abstention:", r["candidates"][0]["decision"])'
       - name: Upload live-source research
         if: always()
         uses: actions/upload-artifact@v4
