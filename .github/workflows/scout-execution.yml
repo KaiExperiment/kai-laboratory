@@ -1,0 +1,128 @@
+name: SCOUT execution check
+
+on:
+  push:
+    branches:
+      - mission-005-scout
+    paths:
+      - 'scout/**'
+      - '.github/workflows/scout-execution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute six maker workflow scenarios on shipped calculator
+        run: node --test tests/maker-workflow-scenarios.test.cjs
+      - name: Run SCOUT tests
+        run: python -m unittest discover -s scout/tests -v
+      - name: Execute actual SCOUT engine on known synthetic control
+        run: |
+          python -m scout run --input scout/examples/dossier.json --output work/scout-action-control --timestamp 2026-10-19T16:29:00Z
+          python -m scout verify work/scout-action-control
+      - name: Execute real-source preliminary trial
+        run: |
+          python -m scout run --input scout/trials/real-001/dossier.json --output work/scout-real-001
+          python -m scout verify work/scout-real-001
+          cat work/scout-real-001/report.md
+      - name: Test SCOUT public-source collector
+        id: collect
+        continue-on-error: true
+        run: |
+          python -m scout.collector --url "https://www.gutenberg.org/robots.txt" --output work/scout-public-source
+          cat work/scout-public-source/provenance.json
+      - name: Collect relevant UK business guidance (non-blocking external integration)
+        id: govcollect
+        continue-on-error: true
+        run: |
+          python -m scout.collector --url "https://www.gov.uk/set-up-business" --output work/scout-uk-business-guidance
+          cat work/scout-uk-business-guidance/provenance.json
+      - name: Prepare verified UK guidance evidence
+        if: steps.govcollect.outcome == 'success'
+        run: |
+          python -m scout.collected_evidence --snapshot work/scout-uk-business-guidance --id govuk-business-setup --publisher "UK Government" --title "Set up a business" --group govuk --output work/scout-uk-prepared
+      - name: Run conservative UK guidance relevance trial
+        if: steps.govcollect.outcome == 'success'
+        run: |
+          python -m scout.live_trial --prepared work/scout-uk-prepared --output work/scout-uk-dossier
+          python -m scout run --input work/scout-uk-dossier/dossier.json --output work/scout-uk-report
+          python -m scout verify work/scout-uk-report
+          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-uk-report/research.json").read_text()); assert r["candidates"][0]["decision"] == "abstain", "General business guidance must not be treated as customer demand"; print("UK guidance demand abstention verified")'
+      - name: Upload UK guidance research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-uk-guidance-relevance
+          path: |
+            work/scout-uk-prepared/
+            work/scout-uk-report/
+          if-no-files-found: ignore
+      - name: Report UK guidance collection status
+        if: steps.govcollect.outcome == 'failure'
+        run: echo 'UK government guidance collection unavailable; no substantive UK source verification in this run.'
+      - name: Upload UK government guidance provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-uk-business-guidance
+          path: work/scout-uk-business-guidance/
+          if-no-files-found: ignore
+      - name: Prepare collected source for SCOUT dossier
+        if: steps.collect.outcome == 'success'
+        run: |
+          python -m scout.collected_evidence --snapshot work/scout-public-source --id gutenberg-robots --publisher "Project Gutenberg" --title "Robots access rules" --group gutenberg --output work/scout-prepared-source
+          cat work/scout-prepared-source/source-entry.json
+      - name: Run SCOUT on verified live-source dossier
+        if: steps.collect.outcome == 'success'
+        run: |
+          python -m scout.live_trial --prepared work/scout-prepared-source --output work/scout-live-dossier
+          python -m scout run --input work/scout-live-dossier/dossier.json --output work/scout-live-report
+          python -m scout verify work/scout-live-report
+          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-live-report/research.json").read_text()); assert len(r["candidates"]) == 1 and r["candidates"][0]["decision"] == "abstain", "Unsupported live-source opportunity was not rejected"; print("Verified live-source abstention:", r["candidates"][0]["decision"])'
+      - name: Report live-source collection status
+        if: steps.collect.outcome == 'failure'
+        run: echo 'Live source unavailable; offline tests passed, live integration NOT verified in this run.'
+      - name: Upload live-source research
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-live-source-research
+          path: work/scout-live-report/
+          if-no-files-found: ignore
+      - name: Upload prepared source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-prepared-source
+          path: work/scout-prepared-source/
+          if-no-files-found: ignore
+      - name: Upload public source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-public-source-collection
+          path: work/scout-public-source/
+          if-no-files-found: ignore
+      - name: Upload real-source trial report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-real-source-trial-001
+          path: work/scout-real-001/
+          if-no-files-found: ignore
+      - name: Upload reproducible control report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-execution-control
+          path: work/scout-action-control/
+          if-no-files-found: ignore

@@ -1,0 +1,746 @@
+{
+  "agent": "KI-01: SCOUT",
+  "candidates": [
+    {
+      "assessments": {
+        "cost": {
+          "claims": [
+            "implementation",
+            "offline"
+          ],
+          "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+          "score": 4
+        },
+        "feasibility": {
+          "claims": [
+            "implementation",
+            "offline"
+          ],
+          "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+          "score": 3
+        },
+        "novelty": {
+          "claims": [
+            "implementation",
+            "offline"
+          ],
+          "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+          "score": 1
+        },
+        "risk": {
+          "claims": [
+            "implementation",
+            "offline"
+          ],
+          "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+          "score": 3
+        }
+      },
+      "category": "product",
+      "challenge": {
+        "blockers": [],
+        "counterevidence": [],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "flags": [
+          "demand: unsupported speculation",
+          "Source-removal challenge: shortlist depends on individual sources; seek corroboration"
+        ],
+        "leave_one_source_out": [
+          {
+            "blockers": [
+              "Fewer than two independent, nonduplicate supporting sources",
+              "Critical claim unsupported or contradicted",
+              "Invalid reference on a critical claim",
+              "Weighted score below 60/100"
+            ],
+            "decision": "abstain",
+            "removed_source": "review",
+            "score": 7.5
+          },
+          {
+            "blockers": [
+              "No source matches the opportunity rule",
+              "Fewer than two independent, nonduplicate supporting sources",
+              "Critical claim unsupported or contradicted",
+              "Invalid reference on a critical claim",
+              "Weighted score below 60/100"
+            ],
+            "decision": "abstain",
+            "removed_source": "workflow",
+            "score": 7.5
+          }
+        ],
+        "verdict": "provisional; semantic review still required"
+      },
+      "claims": [
+        {
+          "critical": true,
+          "evidence": [
+            {
+              "line": 3,
+              "quote": "Scenario A: a maker needs to compare saved pricing assumptions across products.",
+              "source": "workflow",
+              "stance": "supports",
+              "valid": true
+            }
+          ],
+          "id": "need",
+          "kind": "observation",
+          "status": "traceable",
+          "text": "The fictional scenario describes comparing saved assumptions."
+        },
+        {
+          "critical": true,
+          "evidence": [
+            {
+              "line": 4,
+              "quote": "A local CSV export can be implemented using Python's standard library.",
+              "source": "workflow",
+              "stance": "supports",
+              "valid": true
+            }
+          ],
+          "id": "implementation",
+          "kind": "inference",
+          "status": "traceable",
+          "text": "CSV export is plausible with a standard-library implementation."
+        },
+        {
+          "critical": true,
+          "evidence": [
+            {
+              "line": 3,
+              "quote": "The proposed comparison can run offline with files already on the user's computer.",
+              "source": "review",
+              "stance": "supports",
+              "valid": true
+            }
+          ],
+          "id": "offline",
+          "kind": "observation",
+          "status": "traceable",
+          "text": "The proposed comparison can use existing local files."
+        },
+        {
+          "critical": false,
+          "evidence": [],
+          "id": "demand",
+          "kind": "speculation",
+          "status": "unsupported",
+          "text": "Real makers might value this workflow."
+        }
+      ],
+      "decision": "fixture_shortlist",
+      "falsification_tests": [
+        "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+      ],
+      "fixture": true,
+      "hypothesis": "A local CSV comparison might help makers review inconsistent pricing assumptions.",
+      "id": "csv-comparison",
+      "independent_support_count": 2,
+      "matched_sources": [
+        "workflow"
+      ],
+      "next_action": {
+        "description": "Create a tiny CSV fixture and compare manual spreadsheet review with a local comparison script. No customer data or outreach.",
+        "scope": "local"
+      },
+      "origin": "operator-authored rule matched against local sources",
+      "rank": 1,
+      "risks": [
+        "Fixture assumptions may not generalise to real users."
+      ],
+      "score": 67.5,
+      "scores": {
+        "cost": 4,
+        "evidence": 2,
+        "feasibility": 3,
+        "novelty": 1,
+        "risk": 3
+      },
+      "title": "Offline pricing assumption comparison",
+      "triggers": [
+        "compare saved pricing"
+      ],
+      "uncertainties": [
+        "Demand, novelty and effort have not been measured."
+      ]
+    },
+    {
+      "assessments": {
+        "cost": {
+          "claims": [
+            "buyers"
+          ],
+          "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+          "score": 4
+        },
+        "feasibility": {
+          "claims": [
+            "buyers"
+          ],
+          "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+          "score": 3
+        },
+        "novelty": {
+          "claims": [
+            "buyers"
+          ],
+          "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+          "score": 1
+        },
+        "risk": {
+          "claims": [
+            "buyers"
+          ],
+          "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+          "score": 3
+        }
+      },
+      "category": "service",
+      "challenge": {
+        "blockers": [
+          "Fewer than two independent, nonduplicate supporting sources",
+          "Critical claim unsupported or contradicted",
+          "Weighted score below 60/100"
+        ],
+        "counterevidence": [],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "flags": [
+          "buyers: unsupported speculation",
+          "feasibility: unsupported assessment; effective score 0",
+          "novelty: unsupported assessment; effective score 0",
+          "cost: unsupported assessment; effective score 0",
+          "risk: unsupported assessment; effective score 0"
+        ],
+        "leave_one_source_out": [],
+        "verdict": "weakened/abstain"
+      },
+      "claims": [
+        {
+          "critical": true,
+          "evidence": [],
+          "id": "buyers",
+          "kind": "speculation",
+          "status": "unsupported",
+          "text": "Customers will pay for reports."
+        }
+      ],
+      "decision": "abstain",
+      "falsification_tests": [
+        "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+      ],
+      "fixture": true,
+      "hypothesis": "A paid research service might find customers.",
+      "id": "research-service",
+      "independent_support_count": 0,
+      "matched_sources": [
+        "workflow"
+      ],
+      "next_action": {
+        "description": "Proposed customer outreach; requires genuine demand evidence, Kai selection and explicit Obe authorisation.",
+        "scope": "consequential"
+      },
+      "origin": "operator-authored rule matched against local sources",
+      "rank": 2,
+      "risks": [
+        "Fixture assumptions may not generalise to real users."
+      ],
+      "score": 0.0,
+      "scores": {
+        "cost": 0,
+        "evidence": 0,
+        "feasibility": 0,
+        "novelty": 0,
+        "risk": 0
+      },
+      "title": "Opportunity research service",
+      "triggers": [
+        "customers"
+      ],
+      "uncertainties": [
+        "Demand, novelty and effort have not been measured."
+      ]
+    },
+    {
+      "assessments": {
+        "cost": {
+          "claims": [
+            "equipment"
+          ],
+          "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+          "score": 4
+        },
+        "feasibility": {
+          "claims": [
+            "equipment"
+          ],
+          "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+          "score": 3
+        },
+        "novelty": {
+          "claims": [
+            "equipment"
+          ],
+          "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+          "score": 1
+        },
+        "risk": {
+          "claims": [
+            "equipment"
+          ],
+          "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+          "score": 3
+        }
+      },
+      "category": "experiment",
+      "challenge": {
+        "blockers": [
+          "Fewer than two independent, nonduplicate supporting sources",
+          "Critical claim unsupported or contradicted",
+          "Unresolved contradictory evidence",
+          "Weighted score below 60/100"
+        ],
+        "counterevidence": [
+          "equipment"
+        ],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "flags": [
+          "equipment: contradicted observation",
+          "feasibility: unsupported assessment; effective score 0",
+          "novelty: unsupported assessment; effective score 0",
+          "cost: unsupported assessment; effective score 0",
+          "risk: unsupported assessment; effective score 0"
+        ],
+        "leave_one_source_out": [],
+        "verdict": "weakened/abstain"
+      },
+      "claims": [
+        {
+          "critical": true,
+          "evidence": [
+            {
+              "line": 3,
+              "quote": "The planning author assumes calibrated equipment is available.",
+              "source": "sensor",
+              "stance": "supports",
+              "valid": true
+            },
+            {
+              "line": 5,
+              "quote": "For the hypothetical sensor experiment, the required calibrated equipment is unavailable.",
+              "source": "review",
+              "stance": "contradicts",
+              "valid": true
+            }
+          ],
+          "id": "equipment",
+          "kind": "observation",
+          "status": "contradicted",
+          "text": "Calibrated equipment is available."
+        }
+      ],
+      "decision": "abstain",
+      "falsification_tests": [
+        "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+      ],
+      "fixture": true,
+      "hypothesis": "A sensor experiment might be feasible with available calibrated equipment.",
+      "id": "sensor-experiment",
+      "independent_support_count": 0,
+      "matched_sources": [
+        "review",
+        "sensor"
+      ],
+      "next_action": {
+        "description": "Obtain equipment and perform a physical experiment only after a separate safety plan and Obe approval.",
+        "scope": "consequential"
+      },
+      "origin": "operator-authored rule matched against local sources",
+      "rank": 3,
+      "risks": [
+        "Fixture assumptions may not generalise to real users."
+      ],
+      "score": 0.0,
+      "scores": {
+        "cost": 0,
+        "evidence": 0,
+        "feasibility": 0,
+        "novelty": 0,
+        "risk": 0
+      },
+      "title": "Calibrated sensor experiment",
+      "triggers": [
+        "sensor experiment"
+      ],
+      "uncertainties": [
+        "Demand, novelty and effort have not been measured."
+      ]
+    }
+  ],
+  "input_sha256": "fef978d1fc31609421279eff036751641b0d49d85d546219271d04c6d4a39cba",
+  "inputs": {
+    "opportunity_rules": [
+      {
+        "assessments": {
+          "cost": {
+            "claims": [
+              "implementation",
+              "offline"
+            ],
+            "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+            "score": 4
+          },
+          "feasibility": {
+            "claims": [
+              "implementation",
+              "offline"
+            ],
+            "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+            "score": 3
+          },
+          "novelty": {
+            "claims": [
+              "implementation",
+              "offline"
+            ],
+            "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+            "score": 1
+          },
+          "risk": {
+            "claims": [
+              "implementation",
+              "offline"
+            ],
+            "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+            "score": 3
+          }
+        },
+        "category": "product",
+        "claims": [
+          {
+            "critical": true,
+            "evidence": [
+              {
+                "quote": "Scenario A: a maker needs to compare saved pricing assumptions across products.",
+                "source": "workflow",
+                "stance": "supports"
+              }
+            ],
+            "id": "need",
+            "kind": "observation",
+            "text": "The fictional scenario describes comparing saved assumptions."
+          },
+          {
+            "critical": true,
+            "evidence": [
+              {
+                "quote": "A local CSV export can be implemented using Python's standard library.",
+                "source": "workflow",
+                "stance": "supports"
+              }
+            ],
+            "id": "implementation",
+            "kind": "inference",
+            "text": "CSV export is plausible with a standard-library implementation."
+          },
+          {
+            "critical": true,
+            "evidence": [
+              {
+                "quote": "The proposed comparison can run offline with files already on the user's computer.",
+                "source": "review",
+                "stance": "supports"
+              }
+            ],
+            "id": "offline",
+            "kind": "observation",
+            "text": "The proposed comparison can use existing local files."
+          },
+          {
+            "critical": false,
+            "evidence": [],
+            "id": "demand",
+            "kind": "speculation",
+            "text": "Real makers might value this workflow."
+          }
+        ],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "hypothesis": "A local CSV comparison might help makers review inconsistent pricing assumptions.",
+        "id": "csv-comparison",
+        "next_action": {
+          "description": "Create a tiny CSV fixture and compare manual spreadsheet review with a local comparison script. No customer data or outreach.",
+          "scope": "local"
+        },
+        "risks": [
+          "Fixture assumptions may not generalise to real users."
+        ],
+        "title": "Offline pricing assumption comparison",
+        "triggers": [
+          "compare saved pricing"
+        ],
+        "uncertainties": [
+          "Demand, novelty and effort have not been measured."
+        ]
+      },
+      {
+        "assessments": {
+          "cost": {
+            "claims": [
+              "equipment"
+            ],
+            "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+            "score": 4
+          },
+          "feasibility": {
+            "claims": [
+              "equipment"
+            ],
+            "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+            "score": 3
+          },
+          "novelty": {
+            "claims": [
+              "equipment"
+            ],
+            "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+            "score": 1
+          },
+          "risk": {
+            "claims": [
+              "equipment"
+            ],
+            "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+            "score": 3
+          }
+        },
+        "category": "experiment",
+        "claims": [
+          {
+            "critical": true,
+            "evidence": [
+              {
+                "quote": "The planning author assumes calibrated equipment is available.",
+                "source": "sensor",
+                "stance": "supports"
+              },
+              {
+                "quote": "For the hypothetical sensor experiment, the required calibrated equipment is unavailable.",
+                "source": "review",
+                "stance": "contradicts"
+              }
+            ],
+            "id": "equipment",
+            "kind": "observation",
+            "text": "Calibrated equipment is available."
+          }
+        ],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "hypothesis": "A sensor experiment might be feasible with available calibrated equipment.",
+        "id": "sensor-experiment",
+        "next_action": {
+          "description": "Obtain equipment and perform a physical experiment only after a separate safety plan and Obe approval.",
+          "scope": "consequential"
+        },
+        "risks": [
+          "Fixture assumptions may not generalise to real users."
+        ],
+        "title": "Calibrated sensor experiment",
+        "triggers": [
+          "sensor experiment"
+        ],
+        "uncertainties": [
+          "Demand, novelty and effort have not been measured."
+        ]
+      },
+      {
+        "assessments": {
+          "cost": {
+            "claims": [
+              "buyers"
+            ],
+            "rationale": "Proposed first step uses existing local files and standard-library software; labour remains a cost.",
+            "score": 4
+          },
+          "feasibility": {
+            "claims": [
+              "buyers"
+            ],
+            "rationale": "Small local prototype seems feasible; implementation time remains unmeasured.",
+            "score": 3
+          },
+          "novelty": {
+            "claims": [
+              "buyers"
+            ],
+            "rationale": "Existing alternatives are plausible; no novelty search has occurred.",
+            "score": 1
+          },
+          "risk": {
+            "claims": [
+              "buyers"
+            ],
+            "rationale": "Local testing limits exposure; usefulness and incorrect interpretation remain risks.",
+            "score": 3
+          }
+        },
+        "category": "service",
+        "claims": [
+          {
+            "critical": true,
+            "evidence": [],
+            "id": "buyers",
+            "kind": "speculation",
+            "text": "Customers will pay for reports."
+          }
+        ],
+        "falsification_tests": [
+          "Compare with a spreadsheet baseline; reject if the prototype adds no useful insight."
+        ],
+        "hypothesis": "A paid research service might find customers.",
+        "id": "research-service",
+        "next_action": {
+          "description": "Proposed customer outreach; requires genuine demand evidence, Kai selection and explicit Obe authorisation.",
+          "scope": "consequential"
+        },
+        "risks": [
+          "Fixture assumptions may not generalise to real users."
+        ],
+        "title": "Opportunity research service",
+        "triggers": [
+          "customers"
+        ],
+        "uncertainties": [
+          "Demand, novelty and effort have not been measured."
+        ]
+      }
+    ],
+    "question": "Which zero-cash investigation should Kai consider next? (Synthetic fixture demonstration)",
+    "schema_version": 1,
+    "sources": [
+      {
+        "accessed_at": "2026-10-19T16:00:00+00:00",
+        "fixture": true,
+        "id": "workflow",
+        "independence_group": "fictional-perspective-workflow",
+        "locator": "fixture:workflow",
+        "path": "evidence/workflow.txt",
+        "publisher": "Mission 005 fixture author",
+        "quality": 2,
+        "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+        "title": "Synthetic workflow note"
+      },
+      {
+        "accessed_at": "2026-10-19T16:00:00+00:00",
+        "fixture": true,
+        "id": "review",
+        "independence_group": "fictional-perspective-review",
+        "locator": "fixture:review",
+        "path": "evidence/review.txt",
+        "publisher": "Mission 005 fixture author",
+        "quality": 2,
+        "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+        "title": "Synthetic review note"
+      },
+      {
+        "accessed_at": "2026-10-19T16:00:00+00:00",
+        "fixture": true,
+        "id": "sensor",
+        "independence_group": "fictional-perspective-sensor",
+        "locator": "fixture:sensor",
+        "path": "evidence/sensor.txt",
+        "publisher": "Mission 005 fixture author",
+        "quality": 2,
+        "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+        "title": "Synthetic sensor note"
+      }
+    ]
+  },
+  "limitations": [
+    "Offline ingestion only: no web search, live research, language model or external actions.",
+    "Opportunity rules, claims and assessments are supplied by the operator; matching is lexical.",
+    "Exact quotes prove traceability, not truth, relevance or logical entailment.",
+    "Contradictions require operator annotations; unannotated semantic conflicts may be missed.",
+    "Source independence and fixture labels are operator declarations, not independently verified.",
+    "Novelty scores do not establish market novelty, patentability, demand or scientific discovery.",
+    "Review identities are local attestations, not authenticated access control."
+  ],
+  "question": "Which zero-cash investigation should Kai consider next? (Synthetic fixture demonstration)",
+  "rubric": {
+    "threshold": 60,
+    "weights": {
+      "cost": 20,
+      "evidence": 30,
+      "feasibility": 25,
+      "novelty": 10,
+      "risk": 15
+    }
+  },
+  "run_id": "450bcca8e97b5a79aba7ce4fa20b17e6f66757f0a837b8c9dd61d7b79761323e",
+  "schema_version": 1,
+  "source_sha256": {
+    "__init__.py": "294f4f41c2dc2d4a5404de84d808bb45d22e10be9b90280ffe7b7040e94c52b5",
+    "__main__.py": "06b970cb6fe507fa3aec3a3ca2dc9f363e37f49ff0977511c22f8e5ff8dedca2",
+    "engine.py": "c5c7d35d6c5819951dec76dd82b6c1c4e2e151fa50089e9e628e7a0b47906046",
+    "review.py": "60dfce3fffba73ae271a494e7ffad2c9e38a077d8b6169e542c7035843090317"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-10-19T16:00:00+00:00",
+      "fixture": true,
+      "id": "workflow",
+      "independence_group": "fictional-perspective-workflow",
+      "locator": "fixture:workflow",
+      "path": "evidence/workflow.txt",
+      "publisher": "Mission 005 fixture author",
+      "quality": 2,
+      "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+      "sha256": "6e228f0d28dfb42dee69f42ded62c3e69499a2d66d7f661acf15334e3c689ed4",
+      "status": "ok",
+      "text": "SYNTHETIC FIXTURE — authored for Mission 005 software testing, 19 October 2026.\nNo interviews, customers, sales or physical experiments occurred.\nScenario A: a maker needs to compare saved pricing assumptions across products.\nA local CSV export can be implemented using Python's standard library.\nA two-hour implementation budget is a planning assumption, not a measured result.\n",
+      "title": "Synthetic workflow note"
+    },
+    {
+      "accessed_at": "2026-10-19T16:00:00+00:00",
+      "fixture": true,
+      "id": "review",
+      "independence_group": "fictional-perspective-review",
+      "locator": "fixture:review",
+      "path": "evidence/review.txt",
+      "publisher": "Mission 005 fixture author",
+      "quality": 2,
+      "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+      "sha256": "ff3fedf4efd766c753f50f5202dac8a987dec3ae8edf2a8c7d83288c878fe6eb",
+      "status": "ok",
+      "text": "SYNTHETIC FIXTURE — a second fictional review perspective, not independent real-world research.\nScenario A: comparing saved assumptions may help identify inconsistent labour rates.\nThe proposed comparison can run offline with files already on the user's computer.\nExisting spreadsheet tools may already meet this need; novelty and demand are untested.\nFor the hypothetical sensor experiment, the required calibrated equipment is unavailable.\n",
+      "title": "Synthetic review note"
+    },
+    {
+      "accessed_at": "2026-10-19T16:00:00+00:00",
+      "fixture": true,
+      "id": "sensor",
+      "independence_group": "fictional-perspective-sensor",
+      "locator": "fixture:sensor",
+      "path": "evidence/sensor.txt",
+      "publisher": "Mission 005 fixture author",
+      "quality": 2,
+      "quality_rationale": "Synthetic scenario material: traceable for software testing only, no real-world evidential value.",
+      "sha256": "1fb5f2f70f4ed805a4f5c938dbb62f07379dfaec581d98b36683e561ca653184",
+      "status": "ok",
+      "text": "SYNTHETIC FIXTURE — fictional planning note, not a scientific result.\nA hypothetical sensor experiment would require calibrated equipment.\nThe planning author assumes calibrated equipment is available.\nNo measurement has been taken and no effect has been demonstrated.\n",
+      "title": "Synthetic sensor note"
+    }
+  ],
+  "timestamp": "2026-10-19T16:29:00+00:00",
+  "version": "0.1.0"
+}
