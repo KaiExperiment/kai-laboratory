@@ -139,11 +139,21 @@ class SemanticLimitTests(unittest.TestCase):
                              "quality_rationale": "Test source", "fixture": False}],
                 "opportunity_rules": [candidate_rule]
             }
+            from scout.engine import sha
+            previous = "0" * 64
+            for event in claim["review_history"]:
+                event["previous_hash"] = previous
+                event["event_hash"] = sha(encoded({k: v for k, v in event.items() if k != "event_hash"}))
+                previous = event["event_hash"]
             path = root / "dossier.json"
             def check():
                 path.write_bytes(encoded(dossier))
                 ingest(path)
             check()
+            claim["review_history"][0]["rationale"] = "Tampered older reasoning"
+            with self.assertRaisesRegex(ValueError, "event hash mismatch"):
+                check()
+            claim["review_history"][0]["rationale"] = "Initially rejected"
             claim["review_history"][-1]["reviewer"] = "other"
             with self.assertRaisesRegex(ValueError, "Latest review history"):
                 check()
