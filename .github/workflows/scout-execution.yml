@@ -44,6 +44,26 @@ jobs:
         run: |
           python -m scout.collector --url "https://www.gov.uk/set-up-business" --output work/scout-uk-business-guidance
           cat work/scout-uk-business-guidance/provenance.json
+      - name: Prepare verified UK guidance evidence
+        if: steps.govcollect.outcome == 'success'
+        run: |
+          python -m scout.collected_evidence --snapshot work/scout-uk-business-guidance --id govuk-business-setup --publisher "UK Government" --title "Set up a business" --group govuk --output work/scout-uk-prepared
+      - name: Run conservative UK guidance relevance trial
+        if: steps.govcollect.outcome == 'success'
+        run: |
+          python -m scout.live_trial --prepared work/scout-uk-prepared --output work/scout-uk-dossier
+          python -m scout run --input work/scout-uk-dossier/dossier.json --output work/scout-uk-report
+          python -m scout verify work/scout-uk-report
+          python -c 'import json; from pathlib import Path; r=json.loads(Path("work/scout-uk-report/research.json").read_text()); assert r["candidates"][0]["decision"] == "abstain", "General business guidance must not be treated as customer demand"; print("UK guidance demand abstention verified")'
+      - name: Upload UK guidance research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-uk-guidance-relevance
+          path: |
+            work/scout-uk-prepared/
+            work/scout-uk-report/
+          if-no-files-found: ignore
       - name: Report UK guidance collection status
         if: steps.govcollect.outcome == 'failure'
         run: echo 'UK government guidance collection unavailable; no substantive UK source verification in this run.'
