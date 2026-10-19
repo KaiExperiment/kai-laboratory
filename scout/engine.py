@@ -11,7 +11,7 @@ LIMITATIONS = [
     'Opportunity rules, claims and assessments are supplied by the operator; matching is lexical.',
     'Exact quotes prove traceability, not truth, relevance or logical entailment.',
     'No semantic verification is performed; even a traceable claim may be false or irrelevant.',
-    'Critical claims require explicit human semantic review before shortlisting; review flags are operator assertions, not automated fact-checks.',
+    'Non-fixture critical claims require explicit semantic review before shortlisting; synthetic fixture shortlists remain test-only and do not imply review.',
     'Contradictions require operator annotations; unannotated semantic conflicts may be missed.',
     'Source independence and fixture labels are operator declarations, not independently verified.',
     'Novelty scores do not establish market novelty, patentability, demand or scientific discovery.',
