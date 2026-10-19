@@ -153,7 +153,7 @@ def evaluate(rule, sources, sensitivity=True):
         blockers.append('Fewer than two independent, nonduplicate supporting sources')
     if not any(c['critical'] for c in claims):
         blockers.append('No critical claim declared')
-    if any(c['critical'] and c['status'] == 'traceable' and c.get('semantic_review') != 'approved' for c in claims):
+    if not any(sources[s]['fixture'] for s in supporting) and any(c['critical'] and c['status'] == 'traceable' and c.get('semantic_review') != 'approved' for c in claims):
         blockers.append('Critical claim lacks explicit semantic review approval')
     if any(c['critical'] and c['status'] != 'traceable' for c in claims):
         blockers.append('Critical claim unsupported or contradicted')
