@@ -99,6 +99,8 @@ def ingest(path):
                     timestamp(review['reviewed_at'])
                     history = c.get('review_history', [])
                     require(isinstance(history, list), 'Review history must be a list')
+                    if c.get('critical'):
+                        require(bool(history), 'Critical semantic approval requires at least one review history event')
                     require(all(isinstance(h, dict) and h.get('verdict') in ('approved', 'rejected', 'reopened')
                                 and nonempty(h.get('reviewer')) and nonempty(h.get('rationale'))
                                 and nonempty(h.get('reviewed_at')) for h in history),
