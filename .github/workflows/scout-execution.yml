@@ -38,6 +38,22 @@ jobs:
         run: |
           python -m scout.collector --url "https://www.gutenberg.org/robots.txt" --output work/scout-public-source
           cat work/scout-public-source/provenance.json
+      - name: Collect relevant UK business guidance (non-blocking external integration)
+        id: govcollect
+        continue-on-error: true
+        run: |
+          python -m scout.collector --url "https://www.gov.uk/set-up-business" --output work/scout-uk-business-guidance
+          cat work/scout-uk-business-guidance/provenance.json
+      - name: Report UK guidance collection status
+        if: steps.govcollect.outcome == 'failure'
+        run: echo 'UK government guidance collection unavailable; no substantive UK source verification in this run.'
+      - name: Upload UK government guidance provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-uk-business-guidance
+          path: work/scout-uk-business-guidance/
+          if-no-files-found: ignore
       - name: Prepare collected source for SCOUT dossier
         if: steps.collect.outcome == 'success'
         run: |
