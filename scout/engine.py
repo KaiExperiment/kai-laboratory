@@ -91,38 +91,41 @@ def ingest(path):
         for c in rule['claims']:
             require(c.get('kind') in ('observation', 'inference', 'speculation'), 'Invalid claim kind')
             if 'semantic_review' in c:
-                require(c['semantic_review'] in ('approved', 'rejected'), 'Invalid semantic review verdict')
+                require(c['semantic_review'] in ('approved', 'rejected', 'reopened'), 'Invalid semantic review verdict')
+                history = c.get('review_history', [])
+                require(isinstance(history, list), 'Review history must be a list')
+                require(all(isinstance(h, dict) and h.get('verdict') in ('approved', 'rejected', 'reopened')
+                            and nonempty(h.get('reviewer')) and nonempty(h.get('rationale'))
+                            and nonempty(h.get('reviewed_at')) for h in history),
+                        'Review history entries require verdict, reviewer, rationale and reviewed_at')
+                for h in history:
+                    timestamp(h['reviewed_at'])
+                require(all(timestamp(history[i]['reviewed_at']) <= timestamp(history[i+1]['reviewed_at'])
+                            for i in range(len(history)-1)), 'Review history must be chronological')
+                previous_hash = '0' * 64
+                for h in history:
+                    require(h.get('previous_hash') == previous_hash,
+                            'Review history hash chain has invalid predecessor')
+                    payload = {k: v for k, v in h.items() if k != 'event_hash'}
+                    expected_hash = sha(encoded(payload))
+                    require(h.get('event_hash') == expected_hash,
+                            'Review history event hash mismatch')
+                    previous_hash = expected_hash
                 if c['semantic_review'] == 'approved':
                     review = c.get('review_record')
                     require(isinstance(review, dict) and all(nonempty(review.get(k)) for k in ('reviewer', 'rationale', 'limitations', 'reviewed_at')),
                             'Semantic approval requires reviewer, rationale, limitations and reviewed_at')
                     timestamp(review['reviewed_at'])
-                    history = c.get('review_history', [])
-                    require(isinstance(history, list), 'Review history must be a list')
                     if c.get('critical'):
                         require(bool(history), 'Critical semantic approval requires at least one review history event')
-                    require(all(isinstance(h, dict) and h.get('verdict') in ('approved', 'rejected', 'reopened')
-                                and nonempty(h.get('reviewer')) and nonempty(h.get('rationale'))
-                                and nonempty(h.get('reviewed_at')) for h in history),
-                            'Review history entries require verdict, reviewer, rationale and reviewed_at')
-                    for h in history:
-                        timestamp(h['reviewed_at'])
-                    require(all(timestamp(history[i]['reviewed_at']) <= timestamp(history[i+1]['reviewed_at'])
-                                for i in range(len(history)-1)), 'Review history must be chronological')
-                    previous_hash = '0' * 64
-                    for h in history:
-                        require(h.get('previous_hash') == previous_hash,
-                                'Review history hash chain has invalid predecessor')
-                        payload = {k: v for k, v in h.items() if k != 'event_hash'}
-                        expected_hash = sha(encoded(payload))
-                        require(h.get('event_hash') == expected_hash,
-                                'Review history event hash mismatch')
-                        previous_hash = expected_hash
                     if history:
                         require(history[-1]['verdict'] == 'approved'
                                 and history[-1]['reviewer'] == review['reviewer']
                                 and timestamp(history[-1]['reviewed_at']) == timestamp(review['reviewed_at']),
                                 'Latest review history entry must match current approval')
+                else:
+                    require(not history or history[-1]['verdict'] == c['semantic_review'],
+                            'Latest review history entry must match current rejection or reopening')
             require(nonempty(c.get('text')) and type(c.get('critical')) is bool, 'Claim text/critical required')
             require(isinstance(c.get('evidence'), list), 'Claim evidence list required')
             for e in c['evidence']:
