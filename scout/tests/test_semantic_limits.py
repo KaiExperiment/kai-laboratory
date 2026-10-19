@@ -34,7 +34,6 @@ class SemanticLimitTests(unittest.TestCase):
         self.assertIn("Fewer than two independent, nonduplicate supporting sources",
                       candidate["challenge"]["blockers"])
 
-    @unittest.expectedFailure
     def test_two_independent_irrelevant_quotes_expose_false_shortlist(self):
         candidate_rule = rule()
         candidate_rule["claims"][0]["evidence"].append(
@@ -44,10 +43,22 @@ class SemanticLimitTests(unittest.TestCase):
             "guide": source("Fees are charged.", "guide"),
         }
         candidate = evaluate(candidate_rule, sources)
-        # This currently passes all lexical gates despite having no demand evidence.
-        # Record as an expected failure until semantic relevance is implemented.
+        # Without explicit semantic review, matching quotes must never be enough.
         self.assertEqual(candidate["decision"], "abstain",
                          "Two irrelevant fee citations must not validate customer demand")
+
+    def test_review_is_explicit_not_automatic(self):
+        candidate_rule = rule()
+        candidate_rule["claims"][0]["semantic_review"] = "approved"
+        candidate_rule["claims"][0]["evidence"].append(
+            {"source": "guide", "quote": "Fees are charged.", "stance": "supports"})
+        candidate = evaluate(candidate_rule, {
+            "policy": source("A fee exists.", "policy"),
+            "guide": source("Fees are charged.", "guide"),
+        })
+        self.assertEqual(candidate["decision"], "shortlist")
+        self.assertEqual(candidate["claims"][0]["semantic_validation"], "not_performed")
+        # Approval is an operator assertion; this is not automatic semantic proof.
 
     def test_quote_is_traceable_not_semantically_proven(self):
         candidate = evaluate(rule(), {"policy": source("A fee exists.", "policy")})
