@@ -15,6 +15,7 @@ class CollectedEvidenceTests(unittest.TestCase):
         (self.folder / "source.txt").write_bytes(data)
         self.record = {
             "status": "ok",
+            "url": "https://www.gutenberg.org/robots.txt",
             "final_url": "https://www.gutenberg.org/robots.txt",
             "retrieved_at": "2026-10-19T18:00:00+00:00",
             "bytes": len(data),
@@ -57,6 +58,15 @@ class CollectedEvidenceTests(unittest.TestCase):
                 self.record["final_url"] = url
                 self.write_record()
                 with self.assertRaisesRegex(ValueError, "allowlist"):
+                    self.prepare()
+
+    def test_spoofed_original_url_rejected(self):
+        for url in ("https://malicious.example/document", "http://www.gov.uk/set-up-business",
+                    "https://www.gov.uk.malicious.example/page"):
+            with self.subTest(url=url):
+                self.record["url"] = url
+                self.write_record()
+                with self.assertRaisesRegex(ValueError, "Original URL"):
                     self.prepare()
 
     def test_naive_retrieval_time_rejected(self):
