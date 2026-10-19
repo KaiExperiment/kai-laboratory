@@ -1,0 +1,40 @@
+{
+  "events": [],
+  "items": [
+    {
+      "action": {
+        "description": "Create a tiny CSV fixture and compare manual spreadsheet review with a local comparison script. No customer data or outreach.",
+        "scope": "local"
+      },
+      "candidate": "csv-comparison",
+      "decision": "fixture_shortlist",
+      "fixture": true,
+      "kai": "pending",
+      "obe": "pending"
+    },
+    {
+      "action": {
+        "description": "Proposed customer outreach; requires genuine demand evidence, Kai selection and explicit Obe authorisation.",
+        "scope": "consequential"
+      },
+      "candidate": "research-service",
+      "decision": "abstain",
+      "fixture": true,
+      "kai": "blocked",
+      "obe": "pending"
+    },
+    {
+      "action": {
+        "description": "Obtain equipment and perform a physical experiment only after a separate safety plan and Obe approval.",
+        "scope": "consequential"
+      },
+      "candidate": "sensor-experiment",
+      "decision": "abstain",
+      "fixture": true,
+      "kai": "blocked",
+      "obe": "pending"
+    }
+  ],
+  "run_id": "450bcca8e97b5a79aba7ce4fa20b17e6f66757f0a837b8c9dd61d7b79761323e",
+  "schema_version": 1
+}

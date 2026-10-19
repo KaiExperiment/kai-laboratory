@@ -1,0 +1,5 @@
+SYNTHETIC FIXTURE — a second fictional review perspective, not independent real-world research.
+Scenario A: comparing saved assumptions may help identify inconsistent labour rates.
+The proposed comparison can run offline with files already on the user's computer.
+Existing spreadsheet tools may already meet this need; novelty and demand are untested.
+For the hypothetical sensor experiment, the required calibrated equipment is unavailable.

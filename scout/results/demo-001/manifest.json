@@ -1,0 +1,9 @@
+{
+  "inputs/dossier.json": "fef978d1fc31609421279eff036751641b0d49d85d546219271d04c6d4a39cba",
+  "inputs/evidence/review.txt": "ff3fedf4efd766c753f50f5202dac8a987dec3ae8edf2a8c7d83288c878fe6eb",
+  "inputs/evidence/sensor.txt": "1fb5f2f70f4ed805a4f5c938dbb62f07379dfaec581d98b36683e561ca653184",
+  "inputs/evidence/workflow.txt": "6e228f0d28dfb42dee69f42ded62c3e69499a2d66d7f661acf15334e3c689ed4",
+  "queue.json": "2fbf3b8589dd40260f11475df551fb8da1197ba521fd8cc08a970d6a955b28db",
+  "report.md": "1c6121003af0e9580881a34c5d27fbc1c29b8769b98994b6517b5e51ebbfcb97",
+  "research.json": "d7830966d79292f500bb04e0c4930d38475a1921224760e84554e42f097f8be7"
+}

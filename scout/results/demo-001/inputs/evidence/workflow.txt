@@ -1,0 +1,5 @@
+SYNTHETIC FIXTURE — authored for Mission 005 software testing, 19 October 2026.
+No interviews, customers, sales or physical experiments occurred.
+Scenario A: a maker needs to compare saved pricing assumptions across products.
+A local CSV export can be implemented using Python's standard library.
+A two-hour implementation budget is a planning assumption, not a measured result.
