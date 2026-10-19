@@ -155,7 +155,7 @@ class SemanticLimitTests(unittest.TestCase):
                 check()
             claim["review_history"][0]["rationale"] = "Initially rejected"
             claim["review_history"][-1]["reviewer"] = "other"
-            with self.assertRaisesRegex(ValueError, "Latest review history"):
+            with self.assertRaisesRegex(ValueError, "event hash mismatch"):
                 check()
             claim["review_history"][-1]["reviewer"] = "reviewer-b"
             claim["review_history"][0]["reviewed_at"] = "2026-10-19T20:00:00Z"
