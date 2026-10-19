@@ -36,6 +36,17 @@ jobs:
         run: |
           python -m scout.collector --url "https://www.gutenberg.org/robots.txt" --output work/scout-public-source
           cat work/scout-public-source/provenance.json
+      - name: Prepare collected source for SCOUT dossier
+        run: |
+          python -m scout.collected_evidence --snapshot work/scout-public-source --id gutenberg-robots --publisher "Project Gutenberg" --title "Robots access rules" --group gutenberg --output work/scout-prepared-source
+          cat work/scout-prepared-source/source-entry.json
+      - name: Upload prepared source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-prepared-source
+          path: work/scout-prepared-source/
+          if-no-files-found: ignore
       - name: Upload public source evidence
         if: always()
         uses: actions/upload-artifact@v4
