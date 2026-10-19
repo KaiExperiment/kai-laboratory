@@ -52,3 +52,21 @@ test('W06 material cost sensitivity: £1.20 increase reduces per-item profit by 
   close(original.profit-increased.profit,1.2);
   // User must manually change input; no built-in history/comparison.
 });
+
+test('T1 real-002 benchmark: 24 attempts, 2 rejects, 22 saleable, manually allocated',()=>{
+  const attempted=24, rejected=2, saleable=attempted-rejected;
+  const totalMaterials=attempted*.55;
+  const totalPackaging=saleable*.18;
+  const totalMinutes=35+attempted*3;
+  const unitMaterials=totalMaterials/saleable;
+  const unitMinutes=totalMinutes/saleable;
+  const r=run({price:0,materials:unitMaterials,packaging:.18,minutes:unitMinutes,hourly:12});
+  close(totalMaterials,13.2);
+  close(totalPackaging,3.96);
+  close(totalMinutes,107);
+  close(r.labour,21.4/saleable);
+  close(r.costs+r.labour,38.56/saleable);
+  close(r.profit,-38.56/saleable);
+  // Tests shipped arithmetic with operator-prepared allocations.
+  // Does NOT demonstrate automated rejection, batch setup or wastage handling.
+});
