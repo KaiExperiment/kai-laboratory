@@ -34,6 +34,21 @@ class SemanticLimitTests(unittest.TestCase):
         self.assertIn("Fewer than two independent, nonduplicate supporting sources",
                       candidate["challenge"]["blockers"])
 
+    @unittest.expectedFailure
+    def test_two_independent_irrelevant_quotes_expose_false_shortlist(self):
+        candidate_rule = rule()
+        candidate_rule["claims"][0]["evidence"].append(
+            {"source": "guide", "quote": "Fees are charged.", "stance": "supports"})
+        sources = {
+            "policy": source("A fee exists.", "policy"),
+            "guide": source("Fees are charged.", "guide"),
+        }
+        candidate = evaluate(candidate_rule, sources)
+        # This currently passes all lexical gates despite having no demand evidence.
+        # Record as an expected failure until semantic relevance is implemented.
+        self.assertEqual(candidate["decision"], "abstain",
+                         "Two irrelevant fee citations must not validate customer demand")
+
     def test_quote_is_traceable_not_semantically_proven(self):
         candidate = evaluate(rule(), {"policy": source("A fee exists.", "policy")})
         self.assertEqual(candidate["claims"][0]["status"], "traceable")
