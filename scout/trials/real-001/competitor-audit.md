@@ -2,7 +2,7 @@
 
 **Research question:** Is another basic UK Etsy fee or handmade pricing calculator a defensible new product?
 
-**Status:** Preliminary desktop comparison. Public descriptions were inspected, but calculations, live UX, accuracy and seller adoption were **not independently tested**. The links are discovery leads, not proof of demand.
+**Status (19 October 2026):** Public competitor pages and Etsy's primary policy were reviewed. This is a **published-feature audit only**: we did not enter scenarios into competitors' tools, independently execute their calculations, measure usability, interview sellers or verify adoption. Public feature descriptions are not proof that a tool works as advertised or that sellers need another product.
 
 | Existing alternative | Published capability | Source |
 | --- | --- | --- |
@@ -14,7 +14,9 @@
 
 **Finding:** Several public tools already advertise substantial overlap with a basic UK fee or handmade-pricing calculator. The existence of these alternatives weakens any unqualified novelty or differentiation claim. It does **not** establish which tools are accurate, widely used, or adequate for a particular seller.
 
-**Important caution:** Some publicly visible fee calculators publish conflicting UK regulatory fee rates (0.32% versus 0.48%) despite 2026 labels. This is a lead for checking official platform policies, not permission to assume any particular calculator is wrong without primary-source verification.
+**Primary-source fee check (19 October 2026):** Etsy's current regulatory operating fee help page explicitly lists the **United Kingdom at 0.48%**, charged on item price plus postage and relevant extras: https://help.etsy.com/hc/en-gb/articles/1500011073202-What-is-a-Regulatory-Operating-Fee . Etsy's announcement says the UK rate rose **from 0.32% to 0.48% on 22 June 2026**: https://community.etsy.com/forum/announcements-290/topic/regulatory-operating-fee-updates-for-some-markets-181930/ . Its primary fees policy confirms the **6.5% transaction fee** and **US$0.20 listing fee**, with country-specific payment processing and conditional charges: https://www.etsy.com/uk/legal/fees . Do not present the old 0.32% rate as a current alternative or silently assume that all fee types have the same base. Some calculators explicitly display 0.48%; this audit has **not** established that any named competitor currently uses the outdated rate.
+
+**Feature-overlap observation:** Crafters Vinyl publicly lists quantity, batch setup time, wastage, VAT status and margin/markup controls. Free Etsy Calculator publicly lists material, labour, packaging, advertising and sensitivity calculations. These advertised features already overlap several proposed W01–W06 scenarios; actual numerical accuracy remains untested. The current Kai calculator requires manual allocation for batches and does not model VAT or separate marketplace fee bases. See `workflow-test-plan.md` and `tests/maker-workflow-scenarios.test.cjs` for reproducible *synthetic* internal tests (not competitor tests).
 
 **SCOUT decision:** No evidence yet of willingness to pay, unmet needs, or sufficient differentiation. Do not shortlist a new generic calculator or claim a validated market. Our existing Maker Profit Calculator remains an experimental free tool, not proven competitive advantage.
 
