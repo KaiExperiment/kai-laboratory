@@ -4,13 +4,14 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 WEIGHTS = {'feasibility': 25, 'novelty': 10, 'cost': 20, 'risk': 15, 'evidence': 30}
 LIMITATIONS = [
     'Offline ingestion only: no web search, live research, language model or external actions.',
     'Opportunity rules, claims and assessments are supplied by the operator; matching is lexical.',
     'Exact quotes prove traceability, not truth, relevance or logical entailment.',
     'No semantic verification is performed; even a traceable claim may be false or irrelevant.',
+    'Critical claims require explicit human semantic review before shortlisting; review flags are operator assertions, not automated fact-checks.',
     'Contradictions require operator annotations; unannotated semantic conflicts may be missed.',
     'Source independence and fixture labels are operator declarations, not independently verified.',
     'Novelty scores do not establish market novelty, patentability, demand or scientific discovery.',
@@ -152,6 +153,8 @@ def evaluate(rule, sources, sensitivity=True):
         blockers.append('Fewer than two independent, nonduplicate supporting sources')
     if not any(c['critical'] for c in claims):
         blockers.append('No critical claim declared')
+    if any(c['critical'] and c['status'] == 'traceable' and c.get('semantic_review') != 'approved' for c in claims):
+        blockers.append('Critical claim lacks explicit semantic review approval')
     if any(c['critical'] and c['status'] != 'traceable' for c in claims):
         blockers.append('Critical claim unsupported or contradicted')
     if any(c['critical'] and any(not e['valid'] for e in c['evidence']) for c in claims):
