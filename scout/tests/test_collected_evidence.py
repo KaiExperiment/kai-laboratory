@@ -50,6 +50,21 @@ class CollectedEvidenceTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 self.prepare(bad)
 
+    def test_non_allowlisted_final_url_rejected(self):
+        for url in ("https://evil.example/claim", "http://www.gov.uk/set-up-business",
+                    "https://www.gov.uk.evil.example/page", "https://user@www.gov.uk/page"):
+            with self.subTest(url=url):
+                self.record["final_url"] = url
+                self.write_record()
+                with self.assertRaisesRegex(ValueError, "allowlist"):
+                    self.prepare()
+
+    def test_naive_retrieval_time_rejected(self):
+        self.record["retrieved_at"] = "2026-10-19T18:00:00"
+        self.write_record()
+        with self.assertRaisesRegex(ValueError, "timezone"):
+            self.prepare()
+
     def test_missing_snapshot_rejected(self):
         (self.folder / "source.txt").unlink()
         with self.assertRaises(OSError):
