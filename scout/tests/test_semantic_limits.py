@@ -6,7 +6,7 @@ A matching quote alone does not prove a claim. These tests document the
 limitation and ensure insufficient corroboration still blocks promotion.
 """
 import unittest
-from scout.engine import evaluate
+from scout.engine import evaluate, encoded, ingest
 
 def source(text, group, quality=3):
     return {"status": "ok", "text": text, "sha256": group,
