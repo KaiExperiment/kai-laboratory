@@ -11,7 +11,8 @@ LIMITATIONS = [
     'Opportunity rules, claims and assessments are supplied by the operator; matching is lexical.',
     'Exact quotes prove traceability, not truth, relevance or logical entailment.',
     'No semantic verification is performed; even a traceable claim may be false or irrelevant.',
-    'Non-fixture critical claims require explicit semantic review before shortlisting; synthetic fixture shortlists remain test-only and do not imply review.',
+    'Non-fixture critical claims require documented operator semantic review before shortlisting; the reviewer identity is an unauthenticated assertion.',
+    'Synthetic fixture shortlists remain test-only and do not imply review.',
     'Contradictions require operator annotations; unannotated semantic conflicts may be missed.',
     'Source independence and fixture labels are operator declarations, not independently verified.',
     'Novelty scores do not establish market novelty, patentability, demand or scientific discovery.',
@@ -89,6 +90,13 @@ def ingest(path):
         unique(rule.get('claims'), 'claims')
         for c in rule['claims']:
             require(c.get('kind') in ('observation', 'inference', 'speculation'), 'Invalid claim kind')
+            if 'semantic_review' in c:
+                require(c['semantic_review'] in ('approved', 'rejected'), 'Invalid semantic review verdict')
+                if c['semantic_review'] == 'approved':
+                    review = c.get('review_record')
+                    require(isinstance(review, dict) and all(nonempty(review.get(k)) for k in ('reviewer', 'rationale', 'limitations', 'reviewed_at')),
+                            'Semantic approval requires reviewer, rationale, limitations and reviewed_at')
+                    timestamp(review['reviewed_at'])
             require(nonempty(c.get('text')) and type(c.get('critical')) is bool, 'Claim text/critical required')
             require(isinstance(c.get('evidence'), list), 'Claim evidence list required')
             for e in c['evidence']:
