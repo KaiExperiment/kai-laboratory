@@ -26,7 +26,7 @@
       "hypothesis": "A fee comparison tool might help UK makers understand changing selling costs.",
       "claims": [
         {
-          "id": "documented",
+          "id": "fee-policy-exists",
           "text": "Etsy charges a transaction fee.",
           "kind": "observation",
           "critical": true,
@@ -39,7 +39,7 @@
           ]
         },
         {
-          "id": "demand",
+          "id": "willingness-to-pay-unverified",
           "text": "UK handmade makers would adopt or pay for this proposed tool.",
           "kind": "speculation",
           "critical": true,
@@ -81,17 +81,19 @@
         "Fee and tax policy changes."
       ],
       "uncertainties": [
+        "The cited fee policy is evidence of a seller cost, not evidence of unmet need, adoption, or willingness to pay.",
         "No representative UK demand evidence or willingness-to-pay data.",
         "Existing software may solve this problem.",
         "SCOUT does not independently verify semantic entailment."
       ],
       "falsification_tests": [
+        "Interview or survey relevant UK sellers about current fee-comparison workflows and record actual behaviour before making demand claims.",
         "Compare with existing Maker Profit Calculator and free alternatives.",
         "Seek independent maker demand evidence before building."
       ],
       "next_action": {
         "scope": "local",
-        "description": "Collect independently attributable real-world evidence and audit existing alternatives; no outreach or publishing."
+        "description": "Compare existing fee-calculation options and collect direct seller workflow evidence; do not infer demand from platform fee documentation."
       }
     },
     {
