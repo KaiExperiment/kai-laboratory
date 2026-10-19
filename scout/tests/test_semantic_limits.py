@@ -108,6 +108,50 @@ class SemanticLimitTests(unittest.TestCase):
         self.assertIn("Previously approved claim invalidated by missing or contradictory evidence",
                       candidate["challenge"]["blockers"])
 
+    def test_review_history_rejects_mismatch_and_reverse_chronology(self):
+        from scout.engine import ingest, encoded
+        import json
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "evidence").mkdir()
+            (root / "evidence/policy.txt").write_text("A fee exists.")
+            candidate_rule = rule()
+            claim = candidate_rule["claims"][0]
+            claim["semantic_review"] = "approved"
+            claim["review_record"] = {
+                "reviewer": "reviewer-b", "rationale": "Approved for test",
+                "limitations": "Not semantic proof", "reviewed_at": "2026-10-19T19:00:00Z"
+            }
+            claim["review_history"] = [
+                {"verdict": "rejected", "reviewer": "reviewer-a",
+                 "rationale": "Initially rejected", "reviewed_at": "2026-10-19T18:00:00Z"},
+                {"verdict": "approved", "reviewer": "reviewer-b",
+                 "rationale": "Reconsidered", "reviewed_at": "2026-10-19T19:00:00Z"}
+            ]
+            dossier = {
+                "schema_version": 1, "question": "Review history integrity?",
+                "sources": [{"id": "policy", "title": "Policy", "publisher": "Test",
+                             "independence_group": "policy", "locator": "test:policy",
+                             "accessed_at": "2026-10-19T18:00:00Z",
+                             "path": "evidence/policy.txt", "quality": 3,
+                             "quality_rationale": "Test source", "fixture": False}],
+                "opportunity_rules": [candidate_rule]
+            }
+            path = root / "dossier.json"
+            def check():
+                path.write_bytes(encoded(dossier))
+                ingest(path)
+            check()
+            claim["review_history"][-1]["reviewer"] = "other"
+            with self.assertRaisesRegex(ValueError, "Latest review history"):
+                check()
+            claim["review_history"][-1]["reviewer"] = "reviewer-b"
+            claim["review_history"][0]["reviewed_at"] = "2026-10-19T20:00:00Z"
+            with self.assertRaisesRegex(ValueError, "chronological"):
+                check()
+
     def test_quote_is_traceable_not_semantically_proven(self):
         candidate = evaluate(rule(), {"policy": source("A fee exists.", "policy")})
         self.assertEqual(candidate["claims"][0]["status"], "traceable")
