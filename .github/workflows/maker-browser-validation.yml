@@ -1,0 +1,29 @@
+name: Maker browser validation
+
+on:
+  push:
+    branches: [mission-006-maker-validation]
+    paths:
+      - 'maker-profit-calculator.html'
+      - 'tests/maker-profit-calculator.browser.cjs'
+      - '.github/workflows/maker-browser-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install temporary Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Exercise real calculator in browser
+        run: node tests/maker-profit-calculator.browser.cjs
