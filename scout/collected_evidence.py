@@ -17,6 +17,8 @@ def prepare(snapshot, source_id, publisher, title, independence_group, quality=1
         raise ValueError("Collection did not succeed")
     if not isinstance(record.get("final_url"), str) or not allowed(record["final_url"]):
         raise ValueError("Final URL is not on the approved HTTPS source allowlist")
+    if not isinstance(record.get("url"), str) or not allowed(record["url"]):
+        raise ValueError("Original URL is not on the approved HTTPS source allowlist")
     if not record.get("retrieved_at"):
         raise ValueError("Missing retrieval time")
     retrieved = datetime.fromisoformat(record["retrieved_at"])
