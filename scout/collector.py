@@ -9,15 +9,25 @@ import json
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
-from urllib.request import Request, urlopen
+from urllib.request import Request, build_opener, HTTPRedirectHandler
 from urllib.error import HTTPError, URLError
 
-ALLOW_HOSTS = {"help.etsy.com", "www.etsy.com"}
+ALLOW_HOSTS = {"help.etsy.com", "www.etsy.com", "www.gutenberg.org"}
 MAX_BYTES = 200_000
 
-def collect(url, output, opener=urlopen):
+def allowed(url):
     parts = urlsplit(url)
-    if parts.scheme != "https" or parts.hostname not in ALLOW_HOSTS or parts.username or parts.password or parts.port not in (None, 443):
+    return (parts.scheme == "https" and parts.hostname in ALLOW_HOSTS
+            and not parts.username and not parts.password and parts.port in (None, 443))
+
+class RestrictedRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not allowed(newurl):
+            raise ValueError("Redirect blocked: destination not on HTTPS allowlist")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+def collect(url, output, opener=None):
+    if not allowed(url):
         raise ValueError("URL must be HTTPS on the explicit public-source allowlist")
     folder = Path(output)
     if folder.exists():
@@ -26,9 +36,9 @@ def collect(url, output, opener=urlopen):
     record = {"url": url, "retrieved_at": datetime.now(timezone.utc).isoformat(), "status": "error", "error": None}
     try:
         request = Request(url, headers={"User-Agent": "KI-01-SCOUT-Research/0.1 (read-only)"})
-        with opener(request, timeout=12) as response:
+        with (opener or build_opener(RestrictedRedirect()).open)(request, timeout=12) as response:
             final = urlsplit(response.geturl())
-            if final.scheme != "https" or final.hostname not in ALLOW_HOSTS:
+            if not allowed(response.geturl()):
                 raise ValueError("Redirect left HTTPS source allowlist")
             data = response.read(MAX_BYTES + 1)
             if len(data) > MAX_BYTES:
