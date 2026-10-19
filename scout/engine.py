@@ -169,6 +169,8 @@ def evaluate(rule, sources, sensitivity=True):
         blockers.append('Invalid reference on a critical claim')
     if any(c['status'] == 'contradicted' for c in claims):
         blockers.append('Unresolved contradictory evidence')
+    if any(c['semantic_review'] == 'approved' and c['status'] != 'traceable' for c in claims if c.get('semantic_review')):
+        blockers.append('Previously approved claim invalidated by missing or contradictory evidence')
     if score < 60:
         blockers.append('Weighted score below 60/100')
     fixture = any(sources[s]['fixture'] for s in supporting | set(matches))
