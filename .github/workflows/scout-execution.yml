@@ -26,7 +26,7 @@ jobs:
       - name: Execute actual SCOUT engine on known synthetic control
         run: |
           python -m scout run --input scout/examples/dossier.json --output work/scout-action-control --timestamp 2026-10-19T16:29:00Z
-          python -m scout verify scout/results/demo-001 work/scout-action-control
+          python -m scout verify work/scout-action-control
       - name: Execute real-source preliminary trial
         run: |
           python -m scout run --input scout/trials/real-001/dossier.json --output work/scout-real-001
