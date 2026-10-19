@@ -36,7 +36,7 @@ def build(prepared, output):
                 {"id": "demand-unverified", "text": "UK makers would adopt or pay for a new tool.",
                  "kind": "speculation", "critical": True, "evidence": []}
             ],
-            "assessments": {},
+            "assessments": {name: {"score": 0, "rationale": "No supporting evidence for this dimension.", "claims": []} for name in ("feasibility", "novelty", "cost", "risk")},
             "risks": ["No evidence of customer demand"],
             "uncertainties": ["This source is unrelated to maker demand", "No independent corroboration"],
             "falsification_tests": ["Collect direct, attributable maker demand evidence"],
