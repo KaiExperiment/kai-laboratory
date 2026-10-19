@@ -124,6 +124,42 @@ class SemanticLimitTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "at least one review history event"):
                 ingest(path)
 
+    def test_rejected_and_reopened_review_history_checked(self):
+        from scout.review_chain import append_event
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "evidence").mkdir()
+            (root / "evidence/policy.txt").write_text("A fee exists.")
+            candidate_rule = rule()
+            claim = candidate_rule["claims"][0]
+            claim["semantic_review"] = "rejected"
+            claim["review_history"] = append_event(
+                [], "rejected", "reviewer-a", "No demand evidence", "2026-10-19T18:00:00Z")
+            dossier = {
+                "schema_version": 1, "question": "Review rejection?",
+                "sources": [{"id": "policy", "title": "Fee policy", "publisher": "Test",
+                             "independence_group": "policy", "locator": "test:policy",
+                             "accessed_at": "2026-10-19T18:00:00Z",
+                             "path": "evidence/policy.txt", "quality": 3,
+                             "quality_rationale": "Test source", "fixture": False}],
+                "opportunity_rules": [candidate_rule]
+            }
+            path = root / "dossier.json"
+            def check():
+                path.write_bytes(encoded(dossier))
+                ingest(path)
+            check()
+            claim["semantic_review"] = "reopened"
+            with self.assertRaisesRegex(ValueError, "match current rejection or reopening"):
+                check()
+            claim["review_history"] = append_event(
+                claim["review_history"], "reopened", "reviewer-b", "Reassessment needed",
+                "2026-10-19T19:00:00Z")
+            check()
+            claim["review_history"][0]["rationale"] = "Quietly rewritten"
+            with self.assertRaisesRegex(ValueError, "event hash mismatch"):
+                check()
+
     def test_approved_claim_is_invalidated_by_new_contradiction(self):
         candidate_rule = rule()
         claim = candidate_rule["claims"][0]
