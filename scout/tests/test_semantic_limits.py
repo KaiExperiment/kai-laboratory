@@ -96,6 +96,34 @@ class SemanticLimitTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Semantic approval requires"):
                 ingest(path)
 
+    def test_critical_approval_without_history_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "evidence").mkdir()
+            (root / "evidence/policy.txt").write_text("A fee exists.")
+            candidate_rule = rule()
+            claim = candidate_rule["claims"][0]
+            claim["semantic_review"] = "approved"
+            claim["review_record"] = {
+                "reviewer": "test-reviewer",
+                "rationale": "Operator assertion only",
+                "limitations": "No independent verification",
+                "reviewed_at": "2026-10-19T18:00:00Z",
+            }
+            dossier = {
+                "schema_version": 1, "question": "Does a fee prove demand?",
+                "sources": [{"id": "policy", "title": "Fee policy", "publisher": "Test",
+                             "independence_group": "policy", "locator": "test:policy",
+                             "accessed_at": "2026-10-19T18:00:00Z",
+                             "path": "evidence/policy.txt", "quality": 3,
+                             "quality_rationale": "Test source", "fixture": False}],
+                "opportunity_rules": [candidate_rule]
+            }
+            path = root / "dossier.json"
+            path.write_bytes(encoded(dossier))
+            with self.assertRaisesRegex(ValueError, "at least one review history event"):
+                ingest(path)
+
     def test_approved_claim_is_invalidated_by_new_contradiction(self):
         candidate_rule = rule()
         claim = candidate_rule["claims"][0]
