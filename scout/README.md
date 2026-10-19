@@ -85,3 +85,11 @@ python3 -m scout verify work/live-report
 ```
 
 The October 19 GitHub Actions trial successfully retrieved a public Project Gutenberg file, prepared a dossier, and **abstained** on unsupported maker-tool demand. This proves pipeline integration, not relevant commercial evidence. A previous Etsy request returned HTTP 403 and was not bypassed. Every claim now records `semantic_validation: not_performed`: exact-quote traceability is **not** semantic entailment or fact-checking. No unattended scheduled research or external actions are enabled.
+
+## Review decisions and audit limits
+
+For **non-fixture critical claims**, a real-source shortlist requires an explicit operator semantic approval. Approved critical claims must have a review record (reviewer, rationale, limitations, timezone-aware timestamp) and at least one valid hash-linked review-history event ending in approval. Rejected and reopened claims may have recorded histories; if present, SCOUT checks their hash links and that the latest verdict matches the current state. Use `scout.review_chain.append_event` to construct review events rather than hand-editing hashes.
+
+**Do not mistake this for authentication.** Reviewer names, source independence groups, relevance assessments and quality scores are operator assertions. Hashes detect simple changes to existing events but a person able to rewrite the complete dossier can regenerate a consistent chain; there is no externally controlled checkpoint, signature or access-control layer. Missing history for a rejected or reopened claim is permitted. A recorded approval is **not** automatic verification that a quote actually supports a claim; SCOUT's checks remain lexical. Source provenance verifies snapshot integrity, not publisher identity or the truth of content.
+
+A mixture of fixture and real supporting evidence does **not** waive the real-source review requirement. A shortlist is a provisional research queue entry, not permission to contact people, spend money, publish unsupported findings or take consequential actions. Keep consequential steps under separate human authorization. A successful overall CI run does not prove that optional live web collection succeeded; inspect the collection step and its artifacts separately.
