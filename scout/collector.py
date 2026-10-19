@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 from urllib.error import HTTPError, URLError
 
-ALLOW_HOSTS = {"help.etsy.com", "www.etsy.com", "www.gutenberg.org"}
+ALLOW_HOSTS = {"help.etsy.com", "www.etsy.com", "www.gutenberg.org", "www.gov.uk"}
 MAX_BYTES = 200_000
 
 def allowed(url):
