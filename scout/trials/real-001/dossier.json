@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "question": "Which zero-cash UK handmade-maker software investigation deserves further evidence collection? Real-source preliminary trial; no market validation.",
+  "sources": [
+    {
+      "id": "etsy-fees",
+      "title": "Etsy Help fees excerpt",
+      "publisher": "Etsy Help Centre",
+      "independence_group": "etsy-policy",
+      "locator": "https://help.etsy.com/hc/en-gb/articles/115014483627-What-are-the-Fees-and-Taxes-for-Selling-on-Etsy",
+      "accessed_at": "2026-10-19T17:00:00+01:00",
+      "path": "evidence/etsy-fees-excerpts.txt",
+      "fixture": false,
+      "quality": 3,
+      "quality_rationale": "Primary platform policy excerpt; supports fee existence but does not establish unmet demand or validate a business."
+    }
+  ],
+  "opportunity_rules": [
+    {
+      "id": "marketplace-fees",
+      "title": "Marketplace fee scenario comparator",
+      "category": "product",
+      "triggers": [
+        "transaction"
+      ],
+      "hypothesis": "A fee comparison tool might help UK makers understand changing selling costs.",
+      "claims": [
+        {
+          "id": "documented",
+          "text": "Etsy charges a transaction fee.",
+          "kind": "observation",
+          "critical": true,
+          "evidence": [
+            {
+              "source": "etsy-fees",
+              "quote": "Transaction  | - 6.5% of the total order amount in your designated listing currency.",
+              "stance": "supports"
+            }
+          ]
+        },
+        {
+          "id": "demand",
+          "text": "UK handmade makers would adopt or pay for this proposed tool.",
+          "kind": "speculation",
+          "critical": true,
+          "evidence": []
+        }
+      ],
+      "assessments": {
+        "feasibility": {
+          "score": 2,
+          "rationale": "Plausible small offline prototype, but implementation untested.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "novelty": {
+          "score": 0,
+          "rationale": "No competitor or novelty assessment has been completed.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "cost": {
+          "score": 3,
+          "rationale": "A local proof of concept may be low cash cost; effort unmeasured.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "risk": {
+          "score": 2,
+          "rationale": "Incorrect advice and maintenance costs remain possible.",
+          "claims": [
+            "documented"
+          ]
+        }
+      },
+      "risks": [
+        "Overlap with existing Maker Profit Calculator.",
+        "Fee and tax policy changes."
+      ],
+      "uncertainties": [
+        "No representative UK demand evidence or willingness-to-pay data.",
+        "Existing software may solve this problem.",
+        "SCOUT does not independently verify semantic entailment."
+      ],
+      "falsification_tests": [
+        "Compare with existing Maker Profit Calculator and free alternatives.",
+        "Seek independent maker demand evidence before building."
+      ],
+      "next_action": {
+        "scope": "local",
+        "description": "Collect independently attributable real-world evidence and audit existing alternatives; no outreach or publishing."
+      }
+    },
+    {
+      "id": "materials-stock",
+      "title": "Materials and stock consumption ledger",
+      "category": "product",
+      "triggers": [
+        "material"
+      ],
+      "hypothesis": "A materials ledger could track input consumption and stock levels.",
+      "claims": [
+        {
+          "id": "documented",
+          "text": "A genuine independent source establishes maker demand for a stock ledger.",
+          "kind": "observation",
+          "critical": true,
+          "evidence": []
+        },
+        {
+          "id": "demand",
+          "text": "UK handmade makers would adopt or pay for this proposed tool.",
+          "kind": "speculation",
+          "critical": true,
+          "evidence": []
+        }
+      ],
+      "assessments": {
+        "feasibility": {
+          "score": 2,
+          "rationale": "Plausible small offline prototype, but implementation untested.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "novelty": {
+          "score": 0,
+          "rationale": "No competitor or novelty assessment has been completed.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "cost": {
+          "score": 3,
+          "rationale": "A local proof of concept may be low cash cost; effort unmeasured.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "risk": {
+          "score": 2,
+          "rationale": "Incorrect advice and maintenance costs remain possible.",
+          "claims": [
+            "documented"
+          ]
+        }
+      },
+      "risks": [
+        "Stock errors could mislead production decisions.",
+        "No source in the current snapshot substantiates the proposed user need."
+      ],
+      "uncertainties": [
+        "No representative UK demand evidence or willingness-to-pay data.",
+        "Existing software may solve this problem.",
+        "SCOUT does not independently verify semantic entailment."
+      ],
+      "falsification_tests": [
+        "Compare with existing Maker Profit Calculator and free alternatives.",
+        "Seek independent maker demand evidence before building."
+      ],
+      "next_action": {
+        "scope": "local",
+        "description": "Collect independently attributable real-world evidence and audit existing alternatives; no outreach or publishing."
+      }
+    },
+    {
+      "id": "batch-pricing",
+      "title": "Batch-cost and price-variation analyser",
+      "category": "product",
+      "triggers": [
+        "batch"
+      ],
+      "hypothesis": "A batch-cost comparison could expose underpriced variants.",
+      "claims": [
+        {
+          "id": "documented",
+          "text": "Genuine sources establish demand for batch pricing comparisons.",
+          "kind": "observation",
+          "critical": true,
+          "evidence": []
+        },
+        {
+          "id": "demand",
+          "text": "UK handmade makers would adopt or pay for this proposed tool.",
+          "kind": "speculation",
+          "critical": true,
+          "evidence": []
+        }
+      ],
+      "assessments": {
+        "feasibility": {
+          "score": 2,
+          "rationale": "Plausible small offline prototype, but implementation untested.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "novelty": {
+          "score": 0,
+          "rationale": "No competitor or novelty assessment has been completed.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "cost": {
+          "score": 3,
+          "rationale": "A local proof of concept may be low cash cost; effort unmeasured.",
+          "claims": [
+            "documented"
+          ]
+        },
+        "risk": {
+          "score": 2,
+          "rationale": "Incorrect advice and maintenance costs remain possible.",
+          "claims": [
+            "documented"
+          ]
+        }
+      },
+      "risks": [
+        "Could duplicate existing calculator.",
+        "No genuine batch-cost source in the current snapshot."
+      ],
+      "uncertainties": [
+        "No representative UK demand evidence or willingness-to-pay data.",
+        "Existing software may solve this problem.",
+        "SCOUT does not independently verify semantic entailment."
+      ],
+      "falsification_tests": [
+        "Compare with existing Maker Profit Calculator and free alternatives.",
+        "Seek independent maker demand evidence before building."
+      ],
+      "next_action": {
+        "scope": "local",
+        "description": "Collect independently attributable real-world evidence and audit existing alternatives; no outreach or publishing."
+      }
+    }
+  ]
+}
