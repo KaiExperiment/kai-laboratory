@@ -1,3 +1,5 @@
+import tempfile
+from pathlib import Path
 """Adversarial semantic-validity probes for SCOUT.
 
 A matching quote alone does not prove a claim. These tests document the
