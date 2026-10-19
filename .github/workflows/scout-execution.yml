@@ -32,6 +32,18 @@ jobs:
           python -m scout run --input scout/trials/real-001/dossier.json --output work/scout-real-001
           python -m scout verify work/scout-real-001
           cat work/scout-real-001/report.md
+      - name: Test SCOUT public-source collector
+        continue-on-error: true
+        run: |
+          python -m scout.collector --url "https://help.etsy.com/hc/en-gb/articles/115014483627-What-are-the-Fees-and-Taxes-for-Selling-on-Etsy" --output work/scout-public-source
+          cat work/scout-public-source/provenance.json
+      - name: Upload public source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-public-source-collection
+          path: work/scout-public-source/
+          if-no-files-found: ignore
       - name: Upload real-source trial report
         if: always()
         uses: actions/upload-artifact@v4
