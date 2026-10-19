@@ -4,12 +4,13 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 WEIGHTS = {'feasibility': 25, 'novelty': 10, 'cost': 20, 'risk': 15, 'evidence': 30}
 LIMITATIONS = [
     'Offline ingestion only: no web search, live research, language model or external actions.',
     'Opportunity rules, claims and assessments are supplied by the operator; matching is lexical.',
     'Exact quotes prove traceability, not truth, relevance or logical entailment.',
+    'No semantic verification is performed; even a traceable claim may be false or irrelevant.',
     'Contradictions require operator annotations; unannotated semantic conflicts may be missed.',
     'Source independence and fixture labels are operator declarations, not independently verified.',
     'Novelty scores do not establish market novelty, patentability, demand or scientific discovery.',
@@ -126,7 +127,7 @@ def evaluate(rule, sources, sensitivity=True):
             flags.append(f'{c["id"]}: {status} {c["kind"]}')
         if status == 'traceable':
             supporting.update(support)
-        claims.append(dict(c, evidence=checked, status=status))
+        claims.append(dict(c, evidence=checked, status=status, semantic_validation='not_performed'))
     by_id = {c['id']: c for c in claims}
     # Deduplicate copied text even if the operator supplies different publisher labels.
     hashes = {sources[s]['sha256'] for s in supporting}
@@ -206,9 +207,10 @@ def render(result):
     for c in result['candidates']:
         lines += ['', f'## {c["id"]}: {c["title"]}', '', f'Category: {c["category"]}; fixture: {c["fixture"]}.',
                   f'Hypothesis (operator supplied): {c["hypothesis"]}',
+                'WARNING: quoted text was checked for exact occurrence only; semantic support has NOT been verified.',
                   f'Matched source IDs: {", ".join(c["matched_sources"]) or "none"}', '', '### Claims and provenance', '']
         for claim in c['claims']:
-            lines += [f'- {claim["id"]} [{claim["kind"]}; {claim["status"]}; critical={claim["critical"]}]: {claim["text"]}']
+            lines += [f'- {claim["id"]} [{claim["kind"]}; {claim["status"]}; semantic={claim["semantic_validation"]}; critical={claim["critical"]}]: {claim["text"]}']
             for e in claim['evidence']:
                 lines.append(f'  - {e["source"]} ({e["stance"]}, quote verified={e["valid"]}, line={e["line"]}): {json.dumps(e["quote"], ensure_ascii=False)}')
         lines += ['', '### Evaluation', '', f'Effective scores (0–4): {json.dumps(c["scores"], sort_keys=True)}.']
