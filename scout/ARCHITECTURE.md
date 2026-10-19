@@ -21,9 +21,9 @@ This workflow supports arbitrary questions and user-authored rules, but its reas
 
 Extension points are deliberately ordinary Python functions and versioned JSON:
 
-- An optional read-only collector could write snapshots and provenance into the existing dossier format. It would need explicit network availability, truthful fetch/error logging, access timestamps and source licensing/privacy handling. No such collector exists today.
+- A restricted read-only HTTPS collector now exists in `collector.py`, with a fixed host allowlist, redirect checks, snapshot size cap and retrieval metadata. `collected_evidence.py` verifies snapshot hashes and validates both original and final URLs. It does **not** authenticate publisher identity, source independence, semantic relevance or the truth of claims. External collection is conditional/non-blocking in CI; successful overall CI does not establish that each external source was reachable.
 - A future specialist could propose rules/claims; all suggestions must retain attribution and remain visibly distinct from verified observations. Keep deterministic checks and baseline tests independent of that specialist.
 - A semantic reviewer could add contradiction annotations and alternative hypotheses, with saved inputs/outputs and evaluation against labelled cases. It must not silently replace the existing evidence.
 - An authenticated approval service could replace local actor strings. Execution must be a separately authorised subsystem with exact action scopes and budgets, never an automatic consequence of ranking or a local queue edit.
 
-The repository integration is additive under `scout/`. Existing website, calculator, Prometheus code/results and research records are untouched. Mission 004 branches and PR #4 remain separate. No runtime dependency, build step, server, workflow, hosting setting or site navigation change was introduced.
+The repository integration is additive under `scout/`. Existing website, calculator, Prometheus code/results and research records are untouched. Mission 004 branches and PR #4 remain separate. A separate GitHub Actions research workflow and additive Node scenario tests are included. The existing website, calculator implementation, hosting settings and site navigation are not changed by this PR.
