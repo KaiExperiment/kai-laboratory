@@ -70,3 +70,23 @@ test('T1 real-002 benchmark: 24 attempts, 2 rejects, 22 saleable, manually alloc
   // Tests shipped arithmetic with operator-prepared allocations.
   // Does NOT demonstrate automated rejection, batch setup or wastage handling.
 });
+
+test('T2 real-002: batch size affects fixed setup allocation',()=>{
+  // Illustrative assumptions, not observed seller data: 5 min per attempt,
+  // £0.80 material per attempt, £9 fixed setup materials, 40 min setup labour.
+  // 5% scrap is rounded UP to a whole attempted unit; output counts are exact.
+  function cost(saleable){
+    const attempted=Math.ceil(saleable/.95);
+    const unitMaterials=(attempted*.8+9)/saleable;
+    const unitMinutes=(attempted*5+40)/saleable;
+    const r=run({price:0,materials:unitMaterials,minutes:unitMinutes,hourly:12});
+    return {attempted,unitCost:r.costs+r.labour};
+  }
+  const small=cost(10),large=cost(50);
+  assert.equal(small.attempted,11);
+  assert.equal(large.attempted,53);
+  close(small.unitCost,(11*.8+9+(11*5+40)*.2)/10);
+  close(large.unitCost,(53*.8+9+(53*5+40)*.2)/50);
+  assert.ok(small.unitCost>large.unitCost);
+  // Only the arithmetic is tested. Batch size and scrap still need manual input allocation.
+});
