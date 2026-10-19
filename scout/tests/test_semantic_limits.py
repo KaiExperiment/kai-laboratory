@@ -60,6 +60,27 @@ class SemanticLimitTests(unittest.TestCase):
         self.assertEqual(candidate["claims"][0]["semantic_validation"], "not_performed")
         # Approval is an operator assertion; this is not automatic semantic proof.
 
+    def test_unrecorded_semantic_approval_is_rejected_at_ingestion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "evidence").mkdir()
+            (root / "evidence/policy.txt").write_text("A fee exists.")
+            candidate_rule = rule()
+            candidate_rule["claims"][0]["semantic_review"] = "approved"
+            dossier = {
+                "schema_version": 1, "question": "Does a fee prove demand?",
+                "sources": [{"id": "policy", "title": "Fee policy", "publisher": "Test",
+                             "independence_group": "policy", "locator": "test:policy",
+                             "accessed_at": "2026-10-19T18:00:00Z",
+                             "path": "evidence/policy.txt", "quality": 3,
+                             "quality_rationale": "Test source", "fixture": False}],
+                "opportunity_rules": [candidate_rule]
+            }
+            path = root / "dossier.json"
+            path.write_bytes(encoded(dossier))
+            with self.assertRaisesRegex(ValueError, "Semantic approval requires"):
+                ingest(path)
+
     def test_quote_is_traceable_not_semantically_proven(self):
         candidate = evaluate(rule(), {"policy": source("A fee exists.", "policy")})
         self.assertEqual(candidate["claims"][0]["status"], "traceable")
