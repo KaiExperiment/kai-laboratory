@@ -49,6 +49,19 @@ class SemanticLimitTests(unittest.TestCase):
         self.assertEqual(candidate["decision"], "abstain",
                          "Two irrelevant fee citations must not validate customer demand")
 
+    def test_mixed_fixture_and_real_sources_cannot_bypass_review(self):
+        candidate_rule = rule()
+        candidate_rule["claims"][0]["evidence"].append(
+            {"source": "guide", "quote": "Fees are charged.", "stance": "supports"})
+        sources = {
+            "policy": source("A fee exists.", "policy"),
+            "guide": dict(source("Fees are charged.", "guide"), fixture=True),
+        }
+        candidate = evaluate(candidate_rule, sources)
+        self.assertEqual(candidate["decision"], "abstain")
+        self.assertIn("Critical claim lacks explicit semantic review approval",
+                      candidate["challenge"]["blockers"])
+
     def test_review_is_explicit_not_automatic(self):
         candidate_rule = rule()
         candidate_rule["claims"][0]["semantic_review"] = "approved"
