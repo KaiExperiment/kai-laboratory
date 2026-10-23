@@ -1,0 +1,41 @@
+# AI-authored, experimental integration verification; no deployment or write credentials.
+name: Evidence Engine combined integration experiment
+
+on:
+  push:
+    branches: [mission-031-evidence-engine-integration]
+  pull_request:
+    paths:
+      - 'evidence-engine.html'
+      - 'tests/evidence-engine-local-date.test.cjs'
+      - 'tests/evidence-engine.browser.cjs'
+      - 'tests/evidence-engine-csv.browser.cjs'
+      - '.github/workflows/evidence-engine-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrated-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate both browser harnesses
+        run: |
+          node --check tests/evidence-engine.browser.cjs
+          node --check tests/evidence-engine-csv.browser.cjs
+      - name: Run local-calendar-date synthetic DOM regressions
+        run: node --test tests/evidence-engine-local-date.test.cjs
+      - name: Install temporary Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test date validation and responsive layout in Chromium
+        run: node tests/evidence-engine.browser.cjs
+      - name: Test CSV and JSON exports in Chromium
+        run: node tests/evidence-engine-csv.browser.cjs
