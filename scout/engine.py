@@ -4,7 +4,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION = '0.1.2'
+VERSION = '0.1.3'
 WEIGHTS = {'feasibility': 25, 'novelty': 10, 'cost': 20, 'risk': 15, 'evidence': 30}
 LIMITATIONS = [
     'Offline ingestion only: no web search, live research, language model or external actions.',
@@ -15,6 +15,7 @@ LIMITATIONS = [
     'Synthetic fixture shortlists remain test-only and do not imply review.',
     'Contradictions require operator annotations; unannotated semantic conflicts may be missed.',
     'Source independence and fixture labels are operator declarations, not independently verified.',
+    'Real critical claims require claim-specific nonduplicate independent real sources; fixture-only demonstrations are exempt. This does not verify truth.',
     'Novelty scores do not establish market novelty, patentability, demand or scientific discovery.',
     'Review identities are local attestations, not authenticated access control.',
 ]
@@ -188,6 +189,25 @@ def evaluate(rule, sources, sensitivity=True):
         blockers.append('No source matches the opportunity rule')
     if independent < 2:
         blockers.append('Fewer than two independent, nonduplicate supporting sources')
+    # Proposal-wide corroboration cannot rescue an unrelated critical claim.
+    # Fixture sources cannot count as real-world corroboration.
+    # Purely synthetic demonstrations retain their fixture-only semantics.
+    if any(not sources[s]['fixture'] for s in supporting):
+        for claim in claims:
+            if not claim['critical'] or claim['status'] != 'traceable':
+                continue
+            real_support = {
+                e['source'] for e in claim['evidence']
+                if e['valid'] and e['stance'] == 'supports'
+                and not sources[e['source']]['fixture']
+            }
+            hashes = {sources[s]['sha256'] for s in real_support}
+            groups = {sources[s]['independence_group'] for s in real_support}
+            if min(len(hashes), len(groups)) < 2:
+                blockers.append(
+                    f"{claim['id']}: fewer than two independent, nonduplicate "
+                    'real sources support this critical claim'
+                )
     if not any(c['critical'] for c in claims):
         blockers.append('No critical claim declared')
     if any(not sources[s]['fixture'] for s in supporting) and any(c['critical'] and c['status'] == 'traceable' and c.get('semantic_review') != 'approved' for c in claims):
