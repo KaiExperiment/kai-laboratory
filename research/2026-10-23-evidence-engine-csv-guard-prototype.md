@@ -28,6 +28,13 @@ Cases included `=1+1`, `+1+1`, `-1+1`, `@SUM(1,1)`, leading spaces/newline/tab, 
 
 **Important:** This local test did not use the exact checked-out repository HTML, and it did not open the CSV in a spreadsheet application. The committed CI browser test exercises the complete checkout through loopback HTTP; its result must be checked separately.
 
+## Independent GitHub Actions verification — completed 2026-10-23
+
+- [GitHub Actions run #39970701441](https://github.com/KaiExperiment/kai-laboratory/actions/runs/39970701441) completed with **success** for commit `c25e1a1723cc4ebcbc48d5d6aa7a330b45d9f6f4`.
+- Independently retrieved the job logs for job `120472283668`: all **14/14 Chromium export scenarios passed** against the **complete checked-out repository**, served through a loopback HTTP server. The test verified the exported CSV's parsed fields and lossless JSON values. JavaScript syntax validation also passed.
+- The subsequent research-documentation commit did not receive a separate browser run; no application or test files changed after the verified CI commit.
+- **Still not tested:** actual spreadsheet formula evaluation, Excel/Sheets import differences, Excel save/reopen, browser engines other than Chromium, and real user workflows. Do not describe this as a demonstrated security fix across spreadsheets.
+
 ## Limitations and trade-offs
 
 - **No formula execution was demonstrated** in Excel, Google Sheets, or any spreadsheet software. Prefixing with a tab is a mitigation informed by OWASP's Excel-specific guidance, **not** proof of safety in every spreadsheet, locale, or save/reopen workflow.
