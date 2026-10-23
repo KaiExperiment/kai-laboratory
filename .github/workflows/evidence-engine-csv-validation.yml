@@ -1,0 +1,36 @@
+name: Evidence Engine CSV export experiment
+
+on:
+  push:
+    branches: [mission-030-evidence-engine-csv-guard]
+    paths:
+      - 'evidence-engine.html'
+      - 'tests/evidence-engine-csv.browser.cjs'
+      - '.github/workflows/evidence-engine-csv-validation.yml'
+  pull_request:
+    paths:
+      - 'evidence-engine.html'
+      - 'tests/evidence-engine-csv.browser.cjs'
+      - '.github/workflows/evidence-engine-csv-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  csv-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate browser test syntax
+        run: node --check tests/evidence-engine-csv.browser.cjs
+      - name: Install temporary Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run export regression in Chromium
+        run: node tests/evidence-engine-csv.browser.cjs
