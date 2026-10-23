@@ -4,6 +4,13 @@ name: Evidence Engine combined integration experiment
 on:
   push:
     branches: [mission-031-evidence-engine-integration]
+  pull_request:
+    paths:
+      - 'evidence-engine.html'
+      - 'tests/evidence-engine-local-date.test.cjs'
+      - 'tests/evidence-engine.browser.cjs'
+      - 'tests/evidence-engine-csv.browser.cjs'
+      - '.github/workflows/evidence-engine-integration.yml'
   workflow_dispatch:
 
 permissions:
