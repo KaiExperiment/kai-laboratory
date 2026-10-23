@@ -8,6 +8,8 @@ const path = require('node:path');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const appPath = process.env.EVIDENCE_HTML || path.join(__dirname, '..', 'evidence-engine.html');
 const html = fs.readFileSync(appPath, 'utf8');
+const cssPath = path.join(path.dirname(appPath), 'assets', 'laboratory.css');
+assert.ok(fs.existsSync(cssPath), 'Full laboratory stylesheet must exist');
 const scenarios = [
   ['UK summer midnight', '2026-10-22T23:30:00Z', 'Europe/London', '2026-10-23', '2026-10-24'],
   ['Los Angeles before midnight', '2026-10-23T06:30:00Z', 'America/Los_Angeles', '2026-10-22', '2026-10-23'],
@@ -29,6 +31,10 @@ const scenarios = [
    page.on('pageerror',e=>errors.push(e.message));page.on('dialog',dialog=>dialog.accept());
    await page.clock.install({time:new Date(instant)});
    await page.setContent(html);
+   // setContent uses about:blank, so relative stylesheets are not fetched.
+   // Inject the checked-out site's real CSS to include it in viewport checks.
+   await page.addStyleTag({path:cssPath});
+   assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--acid').trim()),'#cefa69','laboratory stylesheet applied');
    assert.equal(await page.locator('#field-0-date').count(),1,name+' initial input');
    await page.locator('#demo').click();
    const date=page.locator('#field-0-date');
@@ -46,6 +52,10 @@ const scenarios = [
    const page=await context.newPage();const errors=[];
    page.on('pageerror',e=>errors.push(e.message));page.on('dialog',dialog=>dialog.accept());
    await page.setContent(html);
+   // setContent uses about:blank, so relative stylesheets are not fetched.
+   // Inject the checked-out site's real CSS to include it in viewport checks.
+   await page.addStyleTag({path:cssPath});
+   assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--acid').trim()),'#cefa69','laboratory stylesheet applied');
    assert.equal(await page.locator('#entries section').count(),1);
    await page.locator('#add').click();
    assert.equal(await page.locator('#entries section').count(),2);
