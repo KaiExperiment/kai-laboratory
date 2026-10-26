@@ -5,6 +5,11 @@ on:
       - 'ki02/**'
       - 'scout/**'
       - '.github/workflows/ki02-baseline.yml'
+  pull_request:
+    paths:
+      - 'ki02/**'
+      - 'scout/**'
+      - '.github/workflows/ki02-baseline.yml'
   workflow_dispatch:
 permissions:
   contents: read
