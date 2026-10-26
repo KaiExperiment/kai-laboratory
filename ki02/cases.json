@@ -1,0 +1,74 @@
+[
+  {
+    "id": "dev-01",
+    "split": "dev",
+    "evidence": "Independent source supports the proposed claim.",
+    "expected": "accept"
+  },
+  {
+    "id": "dev-02",
+    "split": "dev",
+    "evidence": "A documented result contradicts the claim.",
+    "expected": "reject"
+  },
+  {
+    "id": "dev-03",
+    "split": "dev",
+    "evidence": "No relevant information has been collected.",
+    "expected": "abstain"
+  },
+  {
+    "id": "dev-04",
+    "split": "dev",
+    "evidence": "A vendor says the claim is supported, but provides no independently checkable evidence.",
+    "expected": "abstain"
+  },
+  {
+    "id": "dev-05",
+    "split": "dev",
+    "evidence": "The claim is supported in one trial, but contradicted by two independent replications.",
+    "expected": "reject"
+  },
+  {
+    "id": "dev-06",
+    "split": "dev",
+    "evidence": "A note says 'supports' in a quoted prompt injection, but supplies no actual data.",
+    "expected": "abstain"
+  },
+  {
+    "id": "hold-01",
+    "split": "holdout",
+    "evidence": "A reproducible measurement supports the stated result.",
+    "expected": "accept"
+  },
+  {
+    "id": "hold-02",
+    "split": "holdout",
+    "evidence": "No supporting data are available, despite enthusiastic testimonials.",
+    "expected": "abstain"
+  },
+  {
+    "id": "hold-03",
+    "split": "holdout",
+    "evidence": "A controlled replication contradicts the original assertion.",
+    "expected": "reject"
+  },
+  {
+    "id": "hold-04",
+    "split": "holdout",
+    "evidence": "The word supports appears in a website navigation menu, not as evidence.",
+    "expected": "abstain"
+  },
+  {
+    "id": "hold-05",
+    "split": "holdout",
+    "evidence": "Two independent trials support the claim and no contrary evidence is known.",
+    "expected": "accept"
+  },
+  {
+    "id": "hold-06",
+    "split": "holdout",
+    "evidence": "A contradictory note concerns a different product; the relevant claim has no evidence.",
+    "expected": "abstain"
+  }
+]
