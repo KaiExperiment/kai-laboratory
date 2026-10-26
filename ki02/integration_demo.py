@@ -8,7 +8,7 @@ import json
 import tempfile
 from pathlib import Path
 from .review_queue import prepare_review
-from .review_decision import evaluate_reviewed_case
+from .review_recheck import evaluate_with_source_recheck
 
 def demo():
     with tempfile.TemporaryDirectory() as tmp:
@@ -35,13 +35,13 @@ def demo():
             }
             for item in prepared["review_items"]
         }
-        before = evaluate_reviewed_case(case, prepared, unreviewed)
+        before = evaluate_with_source_recheck(case, prepared, unreviewed, root)
         # Simulated review approval for this synthetic integration fixture ONLY.
         simulated = {
             key: {**value, "relevance_reviewed": True, "provenance_reviewed": True}
             for key, value in unreviewed.items()
         }
-        after = evaluate_reviewed_case(case, prepared, simulated)
+        after = evaluate_with_source_recheck(case, prepared, simulated, root)
         return {"review_queue_statuses": [i["status"] for i in prepared["review_items"]],
                 "automatic_approvals": prepared["automatic_approvals"],
                 "before_simulated_review": before,
