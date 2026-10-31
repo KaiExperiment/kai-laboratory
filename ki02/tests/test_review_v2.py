@@ -21,6 +21,27 @@ class VersionedReviewTests(AuditedReviewTests):
                            self.decisions if decisions is None else decisions,
                            self.root, self.events if events is None else events, **kwargs)
 
+    def test_mismatched_fingerprint(self):
+        observation = self.case["observations"][0]
+        wrong = add_v2_event(
+            self.events, observation=observation, source_sha256="a" * 64,
+            reviewer_id="synthetic", relevance_reviewed=True,
+            provenance_reviewed=True, rationale="Wrong source.")
+        with self.assertRaises(ValueError):
+            self.evaluate(events=wrong)
+
+    def test_replayed_old_chain_rejected_by_checkpoint(self):
+        checkpoint = verify_v2(self.events)
+        observation = self.case["observations"][0]
+        newer = add_v2_event(
+            self.events, observation=observation,
+            source_sha256=self.decisions[observation["id"]]["source_sha256"],
+            reviewer_id="synthetic", relevance_reviewed=True,
+            provenance_reviewed=True, rationale="New review.")
+        with self.assertRaises(ValueError):
+            self.evaluate(expected_head=verify_v2(newer))
+        self.assertEqual(self.evaluate(expected_head=checkpoint), "accept")
+
     def test_explicit_v2_context_digest(self):
         self.assertEqual(self.events[0]["payload"]["schema_version"], 2)
         self.assertEqual(len(self.events[0]["payload"]["context_sha256"]), 64)
