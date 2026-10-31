@@ -42,6 +42,40 @@ class VersionedReviewTests(AuditedReviewTests):
             self.evaluate(expected_head=verify_v2(newer))
         self.assertEqual(self.evaluate(expected_head=checkpoint), "accept")
 
+    def test_reviewer_identity_is_not_authenticated(self):
+        # An attacker who can append and rehash a chain can claim any reviewer ID.
+        # This passing test documents a limitation, not a security guarantee.
+        observation = self.case["observations"][0]
+        forged = add_v2_event(
+            self.events, observation=observation,
+            source_sha256=self.decisions[observation["id"]]["source_sha256"],
+            reviewer_id="unverified-other-reviewer",
+            relevance_reviewed=True, provenance_reviewed=True,
+            rationale="Unverified identity.")
+        self.assertEqual(evaluate_v2(
+            self.case, self.prepared, self.decisions, self.root, forged), "accept")
+
+    def test_rejected_latest_review_blocks_older_approval(self):
+        observation = self.case["observations"][0]
+        rejected = add_v2_event(
+            self.events, observation=observation,
+            source_sha256=self.decisions[observation["id"]]["source_sha256"],
+            reviewer_id="synthetic", relevance_reviewed=False,
+            provenance_reviewed=False, rationale="Approval withdrawn.")
+        with self.assertRaises(ValueError):
+            self.evaluate(events=rejected)
+
+    def test_invalid_schema_version_rejected(self):
+        events = copy.deepcopy(self.events)
+        events[0]["payload"]["schema_version"] = 3
+        with self.assertRaises(ValueError):
+            self.evaluate(events=events)
+
+    def test_duplicate_observation_rejected(self):
+        self.case["observations"].append(copy.deepcopy(self.case["observations"][0]))
+        with self.assertRaises(ValueError):
+            self.evaluate()
+
     def test_explicit_v2_context_digest(self):
         self.assertEqual(self.events[0]["payload"]["schema_version"], 2)
         self.assertEqual(len(self.events[0]["payload"]["context_sha256"]), 64)
