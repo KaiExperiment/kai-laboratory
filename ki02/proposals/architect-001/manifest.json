@@ -1,0 +1,9 @@
+{
+  "candidate_id": "architect-proposal-001",
+  "author_type": "ai_assisted",
+  "hypothesis": "Distinguish a negated or irrelevant contradiction from a contradiction about the target claim, and treat quoted support as insufficient evidence.",
+  "target": "ki02-evidence-classifier",
+  "change_summary": "Propose structured evidence assessment with separate relevance and provenance gates before classification.",
+  "risk": "Synthetic rules can misclassify complex negation, sarcasm and paraphrase; no semantic verification.",
+  "source_path": "candidate_001.py"
+}

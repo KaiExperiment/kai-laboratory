@@ -1,0 +1,9 @@
+{
+  "candidate_id": "architect-002",
+  "author_type": "ai_assisted",
+  "hypothesis": "Prioritising explicit absence of evidence and negation before keyword decisions improves targeted diagnostic behaviour.",
+  "target": "ki02-evidence-classifier",
+  "change_summary": "Conservative phrase gates and exact negation checks for known failure categories.",
+  "risk": "Overfits publicly visible diagnostics; brittle phrase matching, not semantic understanding.",
+  "source_path": "candidate_002.py"
+}

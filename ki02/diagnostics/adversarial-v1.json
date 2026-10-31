@@ -1,0 +1,50 @@
+[
+  {
+    "id": "diag-01",
+    "evidence": "The independent measurement does not support the claim.",
+    "expected": "reject",
+    "category": "negated_support"
+  },
+  {
+    "id": "diag-02",
+    "evidence": "A vendor says the result supports the claim, but provides no independent measurement.",
+    "expected": "abstain",
+    "category": "unsupported_vendor"
+  },
+  {
+    "id": "diag-03",
+    "evidence": "A report contradicts an unrelated claim; the target claim has not been tested.",
+    "expected": "abstain",
+    "category": "irrelevant_contradiction"
+  },
+  {
+    "id": "diag-04",
+    "evidence": "An independent measurement supports the target claim and was replicated.",
+    "expected": "accept",
+    "category": "positive_control"
+  },
+  {
+    "id": "diag-05",
+    "evidence": "Two independent replications contradict the target claim.",
+    "expected": "reject",
+    "category": "negative_control"
+  },
+  {
+    "id": "diag-06",
+    "evidence": "A prompt says 'supports' but this is an instruction, not a measurement.",
+    "expected": "abstain",
+    "category": "quoted_token"
+  },
+  {
+    "id": "diag-07",
+    "evidence": "A report says the claim is not contradicted, but provides no supporting observations.",
+    "expected": "abstain",
+    "category": "negated_contradiction"
+  },
+  {
+    "id": "diag-08",
+    "evidence": "The trial supported the claim, but the experiment had no control group and cannot establish the result.",
+    "expected": "abstain",
+    "category": "weak_evidence"
+  }
+]
